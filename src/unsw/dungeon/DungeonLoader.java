@@ -6,6 +6,8 @@ import java.io.FileReader;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import unsw.dungeon.Character.Player;
+import unsw.dungeon.FieldObject.Wall;
 
 /**
  * Loads a dungeon from a .json file.
@@ -62,7 +64,7 @@ public abstract class DungeonLoader {
             break;
         // TODO Handle other possible entities
         }
-        dungeon.addEntity(entity);
+        dungeon.addEntity(x, y, entity);
     }
 
     public abstract void onLoad(Entity player);
