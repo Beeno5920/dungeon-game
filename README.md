@@ -386,7 +386,16 @@ Fill in here.
 
 ### Week-06
 
-Fill in here.
+Chi Chung: 
+1.  Developed 4 epics and 14 corresponding user stories
+2.  Assigned stories points and priority tags to the 14 user stories mentioned above
+3.  Added acceptance criteria for the 14 user stories mentioned above
+
+Max:
+1.  Developed 1 epic and 3 corresponding user stories
+2.  Added 4 new user stories to existing epics
+3.  Assigned stories points and priority tags to the 7 stories mentioned above
+4.  Added acceptance criteria for the 7 user stories metioned above
 
 ### Week-07
 
