@@ -7,10 +7,7 @@ import unsw.dungeon.Item.Item;
 import unsw.dungeon.Observable;
 import unsw.dungeon.Observer;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The player entity
@@ -19,7 +16,7 @@ import java.util.Map;
  */
 public class Player extends Character implements Observable {
     private Map<ItemCategory, List<Item>> items = new EnumMap<ItemCategory, List<Item>>(ItemCategory.class);
-    private List<Observer> observers;
+    private Set<Observer> observers;
     /**
      * Create a player positioned in square (x,y)
      * @param x
@@ -27,7 +24,7 @@ public class Player extends Character implements Observable {
      */
     public Player(Dungeon dungeon, int x, int y) {
         super(dungeon, x, y);
-        observers = new ArrayList<>();
+        observers = new HashSet<>();
     }
 
     public Item pickUp() {
@@ -108,5 +105,19 @@ public class Player extends Character implements Observable {
     @Override
     public void removeObserver(Observer observer) {
         observers.remove(observer);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return Objects.equals(items, player.items) &&
+                Objects.equals(observers, player.observers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(items, observers);
     }
 }
