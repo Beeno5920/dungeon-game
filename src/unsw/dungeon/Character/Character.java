@@ -23,7 +23,7 @@ public abstract class Character extends Entity {
         orientation = Orientation.DOWN;
     }
 
-    private boolean canMoveTo(int x, int y) {
+    public boolean canMoveTo(int x, int y) {
         if (x < 0 || x >= dungeon.getWidth() || y < 0 || y >= dungeon.getHeight())
             return false;
         boolean canMove = true;
