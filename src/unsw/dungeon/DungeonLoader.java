@@ -34,7 +34,6 @@ public abstract class DungeonLoader {
     private JSONObject json;
     private Map<Integer, KeyDoorPair> keyDoorPairMap;
     private Map<Integer, PortalPair> portalPairMap;
-    private List<Enemy> enemies = new ArrayList<>();
 
     public DungeonLoader(String filename) throws FileNotFoundException {
         json = new JSONObject(new JSONTokener(new FileReader("dungeons/" + filename)));
@@ -58,6 +57,7 @@ public abstract class DungeonLoader {
             loadEntity(dungeon, jsonEntities.getJSONObject(i));
         }
         //TODO Assign observers
+        dungeon.assignObservers();
         return dungeon;
     }
 
@@ -111,7 +111,7 @@ public abstract class DungeonLoader {
             case "enemy":
                 Enemy enemy = new Enemy(dungeon, x, y);
                 onLoad(enemy);
-                this.enemies.add(enemy);
+                entity = enemy;
                 break;
             case "sword":
                 Sword sword = new Sword(ItemCategory.SWORD, x, y);
