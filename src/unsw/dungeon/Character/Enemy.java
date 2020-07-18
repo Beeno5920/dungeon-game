@@ -2,41 +2,38 @@ package unsw.dungeon.Character;
 
 import unsw.dungeon.Dungeon;
 import unsw.dungeon.Entity;
+import unsw.dungeon.Enum.CharacterStatus;
 import unsw.dungeon.FieldObject.FieldObject;
 import unsw.dungeon.Observable;
 import unsw.dungeon.Observer;
 
+import javafx.animation.Timeline;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.util.Duration;
 
 import java.util.*;
 
 public class Enemy extends Character implements Observer, Observable {
     private int speed;
+    private Player player;
     private int[] playerPosition;
     private Set<Observer> observers;
 
     private final int[][] dirs = new int[][] {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-    PriorityQueue<int[]> minHeap = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+    private List<Node> path = new ArrayList<>();
+
     private Timeline timeline;
 
     public Enemy(Dungeon dungeon, int x, int y) {
         super(dungeon, x, y);
         this.speed = 5;
-        this.playerPosition = dungeon.getPlayer().getPosition();
+        this.player = dungeon.getPlayer();
+        this.playerPosition = player.getPosition();
         this.observers = new HashSet<>();
         this.timeline = new Timeline();
 
-        timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1), e -> {
-            minHeap.clear();
-            try {
-                trackPlayer();
-            } catch (InterruptedException interruptedException) {
-                interruptedException.printStackTrace();
-            }
-        }));
+        timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(speed / 10.0), e -> move()));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.playFromStart();
     }
@@ -55,34 +52,56 @@ public class Enemy extends Character implements Observer, Observable {
         return (int) (Math.pow(x - playerPosition[0], 2) + Math.pow(y - playerPosition[1], 2));
     }
 
-    private void Astar() throws InterruptedException {
-        minHeap.add(new int[] {1  + getHeuristic(getX(), getY()), getX(), getY()});
+    private void constructPath(Node end) {
+        while (end.prev != null) {
+            path.add(0, end);
+            end = end.prev;
+        }
+    }
+
+    private void Astar() {
+        PriorityQueue<Node> minHeap = new PriorityQueue<>((a, b) -> (int) (a.dist - b.dist));
+        minHeap.add(new Node(getX(), getY(), getHeuristic(playerPosition[0], playerPosition[1])));
+
         while (!minHeap.isEmpty()) {
-            int[] curr = minHeap.poll();
-            System.out.println(Arrays.toString(curr));
-            if (curr[1] == playerPosition[0] && curr[2] == playerPosition[1])
+            Node curr = minHeap.poll();
+            if (curr.x == playerPosition[0] && curr.y == playerPosition[1]) {
+                constructPath(curr);
                 return;
-            x().set(curr[1]);
-            y().set(curr[2]);
-            Thread.sleep(2000);
+            }
             for (int[] dir : dirs) {
-                int x = curr[1] + dir[0], y = curr[2] + dir[1];
-                if (canMove(x, y))
-                    minHeap.add(new int[]{curr[0] + getHeuristic(x, y), x, y});
+                int x = curr.x + dir[0], y = curr.y + dir[1];
+                if (canMove(x, y)) {
+                    Node next = new Node(x, y, curr.dist + getHeuristic(x, y));
+                    next.prev = curr;
+                    minHeap.add(next);
+                }
             }
         }
     }
 
-    public void trackPlayer() throws InterruptedException {
-        //TODO
+    private void move() {
+        if (path.isEmpty())
+            return;
+
+        Node next = path.remove(0);
+        x().set(next.x);
+        y().set(next.y);
+
+        if (getX() == player.getX() && getY() == player.getY())
+            player.setCharacterStatus(CharacterStatus.DEAD);
+    }
+
+    public void trackPlayer() {
+        path.clear();
         Astar();
-        timeline.stop();
     }
 
     @Override
     public void update(Entity entity) {
         if (entity instanceof Player) {
             playerPosition = ((Player) entity).getPosition();
+            trackPlayer();
         }
     }
 
@@ -121,5 +140,27 @@ public class Enemy extends Character implements Observer, Observable {
     @Override
     public void removeObserver(Observer observer) {
         observers.remove(observer);
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        if (speed > 0)
+            this.speed = speed;
+    }
+
+    private class Node {
+        int x, y;
+        long dist;
+        Node prev;
+
+        public Node(int x, int y, long dist) {
+            this.x = x;
+            this.y = y;
+            this.dist = dist;
+            this.prev = null;
+        }
     }
 }

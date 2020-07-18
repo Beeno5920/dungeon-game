@@ -3,6 +3,7 @@ package unsw.dungeon.Character;
 import unsw.dungeon.Dungeon;
 import unsw.dungeon.Entity;
 import unsw.dungeon.Enum.ItemCategory;
+import unsw.dungeon.Enum.Orientation;
 import unsw.dungeon.Item.Item;
 import unsw.dungeon.Observable;
 import unsw.dungeon.Observer;
