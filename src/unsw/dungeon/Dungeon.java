@@ -70,6 +70,11 @@ public class Dungeon {
         entities.getOrDefault(constructKey(x, y), new ArrayList<>()).removeIf(entity::equals);
     }
 
+    public void changeEntityPosition(int oldX, int oldY, Entity entity) {
+        removeEntity(oldX, oldY, entity);
+        addEntity(entity.getX(), entity.getY(), entity);
+    }
+
     public void assignObservers() {
         Map<Class, List<Entity>> classifiedEntities = classifyEntities();
         List<Entity> observers = classifiedEntities.getOrDefault(Observer.class, new ArrayList<>());
@@ -90,8 +95,6 @@ public class Dungeon {
         for (int i = 0; i < getHeight(); i++) {
             for (int j = 0; j < getWidth(); j++) {
                 for (Entity entity : getEntities(j, i)) {
-                    //if (!(entity instanceof Wall))
-                        //System.out.println(entity);
                     if (entity instanceof Observer) {
                         groups.putIfAbsent(Observer.class, new ArrayList<>());
                         groups.get(Observer.class).add(entity);
