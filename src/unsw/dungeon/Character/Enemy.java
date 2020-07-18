@@ -27,7 +27,7 @@ public class Enemy extends Character implements Observer, Observable {
 
     public Enemy(Dungeon dungeon, int x, int y) {
         super(dungeon, x, y);
-        this.speed = 5;
+        this.speed = 10;
         this.player = dungeon.getPlayer();
         this.playerPosition = player.getPosition();
         this.observers = new HashSet<>();
@@ -60,12 +60,15 @@ public class Enemy extends Character implements Observer, Observable {
     }
 
     private void Astar() {
-        PriorityQueue<Node> minHeap = new PriorityQueue<>((a, b) -> (int) (a.dist - b.dist));
-        minHeap.add(new Node(getX(), getY(), getHeuristic(playerPosition[0], playerPosition[1])));
+        PriorityQueue<Node> toExplore = new PriorityQueue<>((a, b) -> (int) (a.dist - b.dist));
+        boolean escape = player.getCharacterStatus().equals(CharacterStatus.INVINCIBLE);
+        if (escape)
+            toExplore = new PriorityQueue<>((a, b) -> (int) (b.dist - a.dist));
+        toExplore.add(new Node(getX(), getY(), getHeuristic(playerPosition[0], playerPosition[1])));
 
-        while (!minHeap.isEmpty()) {
-            Node curr = minHeap.poll();
-            if (curr.x == playerPosition[0] && curr.y == playerPosition[1]) {
+        while (!toExplore.isEmpty()) {
+            Node curr = toExplore.poll();
+            if (curr.x == playerPosition[0] && curr.y == playerPosition[1] || (escape && toExplore.size() > 20)) {
                 constructPath(curr);
                 return;
             }
@@ -74,7 +77,7 @@ public class Enemy extends Character implements Observer, Observable {
                 if (canMove(x, y)) {
                     Node next = new Node(x, y, curr.dist + getHeuristic(x, y));
                     next.prev = curr;
-                    minHeap.add(next);
+                    toExplore.add(next);
                 }
             }
         }
@@ -84,10 +87,15 @@ public class Enemy extends Character implements Observer, Observable {
         if (path.isEmpty())
             return;
 
+        int x = getX(), y = getY();
+        if (playerPosition[0] == x && playerPosition[1] == y)
+            die();
+
         Node next = path.remove(0);
         x().set(next.x);
         y().set(next.y);
-
+        getDungeon().changeEntityPosition(x, y, this);
+        System.out.println(Arrays.toString(getPosition()));
         if (getX() == player.getX() && getY() == player.getY())
             player.setCharacterStatus(CharacterStatus.DEAD);
     }
@@ -97,10 +105,22 @@ public class Enemy extends Character implements Observer, Observable {
         Astar();
     }
 
+    public void die() {
+        timeline.stop();
+        setCharacterStatus(CharacterStatus.DEAD);
+        player.removeObserver(this);
+        getDungeon().removeEntity(getX(), getY(), this);
+        return;
+    }
+
     @Override
     public void update(Entity entity) {
         if (entity instanceof Player) {
             playerPosition = ((Player) entity).getPosition();
+            if (playerPosition[0] == getX() && playerPosition[1] == getY()) {
+                die();
+                return;
+            }
             trackPlayer();
         }
     }
