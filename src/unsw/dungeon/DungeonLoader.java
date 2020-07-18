@@ -118,6 +118,11 @@ public abstract class DungeonLoader {
                 onLoad(sword);
                 entity = sword;
                 break;
+            case "invincibility":
+                InvincibilityPotion invincibilityPotion = new InvincibilityPotion(ItemCategory.POTION, x, y);
+                onLoad(invincibilityPotion);
+                entity = invincibilityPotion;
+                break;
         }
         dungeon.addEntity(x, y, entity);
     }
