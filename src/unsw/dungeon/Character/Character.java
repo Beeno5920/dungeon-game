@@ -28,6 +28,8 @@ public abstract class Character extends Entity {
             return false;
         boolean canMove = true;
         for (Entity entity : dungeon.getEntities(x, y)) {
+            if (entity instanceof FieldObject)
+                ((FieldObject) entity).interact(this);
             if (entity instanceof FieldObject && ((FieldObject) entity).isObstacle()) {
                 canMove = false;
                 break;
@@ -40,29 +42,41 @@ public abstract class Character extends Entity {
 
     public void moveUp() {
         orientation = Orientation.UP;
-        if (canMoveTo(getX(), getY() - 1))
+        int y = getY();
+        if (canMoveTo(getX(), getY() - 1)) {
             y().set(getY() - 1);
+            dungeon.changeEntityPosition(getX(), y, this);
+        }
         notifyAllObservers();
     }
 
     public void moveDown() {
         orientation = Orientation.DOWN;
-        if (canMoveTo(getX(), getY() + 1))
+        int y = getY();
+        if (canMoveTo(getX(), getY() + 1)) {
             y().set(getY() + 1);
+            dungeon.changeEntityPosition(getX(), y, this);
+        }
         notifyAllObservers();
     }
 
     public void moveLeft() {
         orientation = Orientation.LEFT;
-        if (canMoveTo(getX() - 1, getY()))
+        int x = getX();
+        if (canMoveTo(getX() - 1, getY())) {
             x().set(getX() - 1);
+            dungeon.changeEntityPosition(x, getY(), this);
+        }
         notifyAllObservers();
     }
 
     public void moveRight() {
         orientation = Orientation.RIGHT;
-        if (canMoveTo(getX() + 1, getY()))
+        int x = getX();
+        if (canMoveTo(getX() + 1, getY())) {
             x().set(getX() + 1);
+            dungeon.changeEntityPosition(x, getY(), this);
+        }
         notifyAllObservers();
     }
 
