@@ -31,11 +31,12 @@ public class Player extends Character implements Observable {
     public Item pickUp() {
         List<Entity> entities = getDungeon().getEntities(getX(), getY());
         for (Entity entity : entities) {
-            if (entities instanceof Item) {
+            if (entity instanceof Item) {
                 ItemCategory itemCategory = ((Item) entity).getItemCategory();
                 ((Item) entity).onPick(this);
                 items.putIfAbsent(itemCategory, new ArrayList<>());
                 items.get(itemCategory).add((Item) entity);
+                getDungeon().removeEntity(entity.getX(), entity.getY(), entity);
                 return (Item) entity;
             }
         }
@@ -43,7 +44,7 @@ public class Player extends Character implements Observable {
     }
 
     public boolean useItem(ItemCategory itemCategory) {
-        if (!items.containsKey(itemCategory) || items.getOrDefault(itemCategory, new ArrayList<>()).size() == 1)
+        if (!items.containsKey(itemCategory) || items.getOrDefault(itemCategory, new ArrayList<>()).size() == 0)
             return false;
         items.get(itemCategory).get(0).use(this);
         return true;
