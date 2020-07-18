@@ -5,6 +5,8 @@ import unsw.dungeon.Character.Player;
 import unsw.dungeon.Entity;
 import unsw.dungeon.Enum.ItemCategory;
 
+import java.util.Arrays;
+
 public class Sword extends Item {
     private int durability = 5;
 
@@ -18,7 +20,9 @@ public class Sword extends Item {
         for (Entity entity : player.getEntities(position[0], position[1])) {
             if (entity instanceof Enemy) {
                 player.removeEntity(position[0], position[1], entity);
+                ((Enemy) entity).die();
                 //TODO Remove the image of the enemy
+                break;
             }
         }
         if (--durability == 0)
