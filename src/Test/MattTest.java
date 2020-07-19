@@ -1,4 +1,4 @@
-package test;
+package unsw.dungeon.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
