@@ -8,6 +8,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import unsw.dungeon.Character.Player;
+import unsw.dungeon.Enum.ItemCategory;
 
 import java.io.File;
 
@@ -64,6 +66,12 @@ public class DungeonController {
         case RIGHT:
             player.moveRight();
             break;
+        case F:
+            player.useItem(ItemCategory.SWORD);
+        case G:
+            player.useItem(ItemCategory.KEY);
+        case SPACE:
+            player.pickUp();
         default:
             break;
         }
