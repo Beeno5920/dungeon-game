@@ -80,6 +80,10 @@ public abstract class Character extends Entity {
         notifyAllObservers();
     }
 
+    public boolean isSamePosition(int x, int y) {
+        return getX() == x && getY() == y;
+    }
+
     public int[] getPosition() {
         return new int[] {getX(), getY()};
     }

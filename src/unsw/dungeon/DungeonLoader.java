@@ -91,7 +91,7 @@ public abstract class DungeonLoader {
                 entity = door;
                 break;
             case "key":
-                Key key = new Key(ItemCategory.KEY, x, y);
+                Key key = new Key(x, y);
                 id = json.getInt("id");
                 if (!keyDoorPairMap.containsKey(id))
                     keyDoorPairMap.put(id, new KeyDoorPair(key));
@@ -114,12 +114,12 @@ public abstract class DungeonLoader {
                 entity = enemy;
                 break;
             case "sword":
-                Sword sword = new Sword(ItemCategory.SWORD, x, y);
+                Sword sword = new Sword(x, y);
                 onLoad(sword);
                 entity = sword;
                 break;
             case "invincibility":
-                InvincibilityPotion invincibilityPotion = new InvincibilityPotion(ItemCategory.POTION, x, y);
+                InvincibilityPotion invincibilityPotion = new InvincibilityPotion(x, y);
                 onLoad(invincibilityPotion);
                 entity = invincibilityPotion;
                 break;
