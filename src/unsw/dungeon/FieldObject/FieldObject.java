@@ -1,5 +1,7 @@
 package unsw.dungeon.FieldObject;
 
+import unsw.dungeon.Character.Character;
+import unsw.dungeon.Character.Player;
 import unsw.dungeon.Entity;
 
 public abstract class FieldObject extends Entity {
@@ -9,6 +11,8 @@ public abstract class FieldObject extends Entity {
         super(x, y);
         this.isObstacle = isObstacle;
     }
+
+    public abstract void interact(Character character);
 
     public boolean isObstacle() {
         return isObstacle;

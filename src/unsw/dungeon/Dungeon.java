@@ -5,6 +5,8 @@ package unsw.dungeon;
 
 import unsw.dungeon.Character.Enemy;
 import unsw.dungeon.Character.Player;
+import unsw.dungeon.FieldObject.FieldObject;
+import unsw.dungeon.FieldObject.Wall;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,5 +68,44 @@ public class Dungeon {
 
     public void removeEntity(int x, int y, Entity entity) {
         entities.getOrDefault(constructKey(x, y), new ArrayList<>()).removeIf(entity::equals);
+    }
+
+    public void changeEntityPosition(int oldX, int oldY, Entity entity) {
+        removeEntity(oldX, oldY, entity);
+        addEntity(entity.getX(), entity.getY(), entity);
+    }
+
+    public void assignObservers() {
+        Map<Class, List<Entity>> classifiedEntities = classifyEntities();
+        List<Entity> observers = classifiedEntities.getOrDefault(Observer.class, new ArrayList<>());
+        List<Entity> subjects = classifiedEntities.getOrDefault(Observable.class, new ArrayList<>());
+
+        for (Entity subject : subjects) {
+            for (Entity observer : observers) {
+                if (subject == observer)
+                    continue;
+                ((Observable) subject).addObserver((Observer) observer);
+            }
+        }
+    }
+
+    private Map<Class, List<Entity>> classifyEntities() {
+        Map<Class, List<Entity>> groups = new HashMap<>();
+
+        for (int i = 0; i < getHeight(); i++) {
+            for (int j = 0; j < getWidth(); j++) {
+                for (Entity entity : getEntities(j, i)) {
+                    if (entity instanceof Observer) {
+                        groups.putIfAbsent(Observer.class, new ArrayList<>());
+                        groups.get(Observer.class).add(entity);
+                    } else if (entity instanceof Observable) {
+                        groups.putIfAbsent(Observable.class, new ArrayList<>());
+                        groups.get(Observable.class).add(entity);
+                    }
+                }
+            }
+        }
+
+        return groups;
     }
 }
