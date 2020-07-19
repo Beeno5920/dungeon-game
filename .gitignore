@@ -3,6 +3,8 @@
 hs_err_pid*
 /bin/
 /lib/
+/build/
+/.gradle/
 .idea
 *.iml
 out/
