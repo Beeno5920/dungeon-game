@@ -27,7 +27,7 @@ public class Enemy extends Character implements Observer, Observable {
 
     public Enemy(Dungeon dungeon, int x, int y) {
         super(dungeon, x, y);
-        this.speed = 10;
+        this.speed = 5;
         this.player = dungeon.getPlayer();
         this.playerPosition = player.getPosition();
         this.observers = new HashSet<>();
@@ -60,6 +60,9 @@ public class Enemy extends Character implements Observer, Observable {
     }
 
     private void Astar() {
+        if (player.getCharacterStatus().equals(CharacterStatus.DEAD))
+            return;
+
         PriorityQueue<Node> toExplore = new PriorityQueue<>((a, b) -> (int) (a.dist - b.dist));
         boolean escape = player.getCharacterStatus().equals(CharacterStatus.INVINCIBLE);
         if (escape)
@@ -95,7 +98,6 @@ public class Enemy extends Character implements Observer, Observable {
         x().set(next.x);
         y().set(next.y);
         getDungeon().changeEntityPosition(x, y, this);
-        System.out.println(Arrays.toString(getPosition()));
         if (getX() == player.getX() && getY() == player.getY())
             player.setCharacterStatus(CharacterStatus.DEAD);
     }
@@ -113,12 +115,19 @@ public class Enemy extends Character implements Observer, Observable {
         return;
     }
 
+    public int[] getPlayerPosition() {
+        return playerPosition;
+    }
+
     @Override
     public void update(Entity entity) {
         if (entity instanceof Player) {
             playerPosition = ((Player) entity).getPosition();
-            if (playerPosition[0] == getX() && playerPosition[1] == getY()) {
-                die();
+            if (((Player) entity).isSamePosition(getX(), getY())) {
+                if (((Player) entity).getCharacterStatus().equals(CharacterStatus.INVINCIBLE))
+                    die();
+                else
+                    ((Player) entity).setCharacterStatus(CharacterStatus.DEAD);
                 return;
             }
             trackPlayer();
