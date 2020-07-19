@@ -422,7 +422,13 @@ Max:
 
 ### Week-07
 
-Fill in here.
+Chi Chung:
+1.  Created the UML diagram
+2.  Created Observer and Observable interfaces
+3.  Created 3 enums
+4.  Implemented Characters related entities (player and enemy)
+5.  Implemented Items related entities (key, sword and invincibiliy potion)
+6.  Wrote JUnit tests for the implemented entities
 
 ### Week-08
 
