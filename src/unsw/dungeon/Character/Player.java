@@ -64,7 +64,7 @@ public class Player extends Character implements Observable {
 
     public boolean useItem(Item item) {
         ItemCategory itemCategory = item.getItemCategory();
-        if (!items.containsKey(itemCategory) || items.getOrDefault(itemCategory, new ArrayList<>()).size() == 1)
+        if (!items.containsKey(itemCategory) || items.getOrDefault(itemCategory, new ArrayList<>()).size() == 0)
             return false;
         for (Item ownedItem : items.get(itemCategory)) {
             if (ownedItem.equals(item)) {
@@ -77,7 +77,7 @@ public class Player extends Character implements Observable {
 
     public void discardItem(Item item) {
         ItemCategory itemCategory = item.getItemCategory();
-        if (!items.containsKey(itemCategory) || items.getOrDefault(itemCategory, new ArrayList<>()).size() == 1)
+        if (!items.containsKey(itemCategory) || items.getOrDefault(itemCategory, new ArrayList<>()).size() == 0)
             return;
         items.get(itemCategory).remove(item);
     }

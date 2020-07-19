@@ -67,6 +67,10 @@ public class Dungeon {
     }
 
     public void removeEntity(int x, int y, Entity entity) {
+        entities.getOrDefault(constructKey(x, y), new ArrayList<>()).remove(entity);
+    }
+
+    public void removeAllSameEntities(int x, int y, Entity entity) {
         entities.getOrDefault(constructKey(x, y), new ArrayList<>()).removeIf(entity::equals);
     }
 
