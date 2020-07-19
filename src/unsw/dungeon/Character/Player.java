@@ -16,7 +16,8 @@ import java.util.*;
  *
  */
 public class Player extends Character implements Observable {
-    private Map<ItemCategory, List<Item>> items = new EnumMap<ItemCategory, List<Item>>(ItemCategory.class);
+    private Map<ItemCategory, List<Item>> items;
+    private Map<ItemCategory, Integer> itemLimit;
     private Set<Observer> observers;
     /**
      * Create a player positioned in square (x,y)
@@ -26,6 +27,15 @@ public class Player extends Character implements Observable {
     public Player(Dungeon dungeon, int x, int y) {
         super(dungeon, x, y);
         observers = new HashSet<>();
+        this.items= new EnumMap<ItemCategory, List<Item>>(ItemCategory.class);
+        this.itemLimit = new EnumMap<ItemCategory, Integer>(ItemCategory.class);
+
+        initItemLimit();
+    }
+
+    private void initItemLimit() {
+        itemLimit.put(ItemCategory.SWORD, 1);
+        itemLimit.put(ItemCategory.KEY, 1);
     }
 
     public Item pickUp() {
@@ -35,6 +45,8 @@ public class Player extends Character implements Observable {
                 ItemCategory itemCategory = ((Item) entity).getItemCategory();
                 ((Item) entity).onPick(this);
                 items.putIfAbsent(itemCategory, new ArrayList<>());
+                if (itemLimit.containsKey(itemCategory) && itemLimit.get(itemCategory) == items.get(itemCategory).size())
+                    continue;
                 items.get(itemCategory).add((Item) entity);
                 getDungeon().removeEntity(entity.getX(), entity.getY(), entity);
                 return (Item) entity;
@@ -67,7 +79,7 @@ public class Player extends Character implements Observable {
         ItemCategory itemCategory = item.getItemCategory();
         if (!items.containsKey(itemCategory) || items.getOrDefault(itemCategory, new ArrayList<>()).size() == 1)
             return;
-        items.get(itemCategory).removeIf(i -> i.equals(item));
+        items.get(itemCategory).remove(item);
     }
 
     public void discardAllItems(ItemCategory itemCategory) {

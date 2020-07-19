@@ -10,8 +10,8 @@ import java.util.Arrays;
 public class Sword extends Item {
     private int durability = 5;
 
-    public Sword(ItemCategory itemCategory, int x, int y) {
-        super(itemCategory, x, y);
+    public Sword(int x, int y) {
+        super(ItemCategory.SWORD, x, y);
     }
 
     @Override
