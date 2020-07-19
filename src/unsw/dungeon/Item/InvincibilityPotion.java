@@ -12,11 +12,14 @@ public class InvincibilityPotion extends Item {
     private Player player;
     private Timeline timeline;
 
-    public InvincibilityPotion(ItemCategory itemCategory, int x, int y) {
-        super(itemCategory, x, y);
+    public InvincibilityPotion(int x, int y) {
+        super(ItemCategory.POTION, x, y);
         this.timeline = new Timeline();
 
-        timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(5), e -> player.setCharacterStatus(CharacterStatus.NORMAL)));
+        timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(5), e -> {
+            player.setCharacterStatus(CharacterStatus.NORMAL);
+            player.discardItem(this);
+        }));
     }
 
     @Override
