@@ -16,10 +16,16 @@ public class InvincibilityPotion extends Item {
         super(ItemCategory.POTION, x, y);
         this.timeline = new Timeline();
 
-        timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(5), e -> {
+        timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(5), e -> tick(5)));
+    }
+
+    public void tick(double seconds) {
+        if (seconds < 5.0) {
+            System.out.println("You are invincible!");
+        } else {
             player.setCharacterStatus(CharacterStatus.NORMAL);
-            player.discardItem(this);
-        }));
+            System.out.println(player.getCharacterStatus());
+        }
     }
 
     @Override
