@@ -110,7 +110,8 @@ public class Dungeon implements Observer {
                     if (entity instanceof Observer) {
                         groups.putIfAbsent(Observer.class, new ArrayList<>());
                         groups.get(Observer.class).add(entity);
-                    } else if (entity instanceof Observable) {
+                    }
+                    if (entity instanceof Observable) {
                         groups.putIfAbsent(Observable.class, new ArrayList<>());
                         groups.get(Observable.class).add(entity);
                     }

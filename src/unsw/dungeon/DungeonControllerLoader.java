@@ -12,10 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import unsw.dungeon.Character.Enemy;
 import unsw.dungeon.Character.Player;
-import unsw.dungeon.FieldObject.Door;
-import unsw.dungeon.FieldObject.Exit;
-import unsw.dungeon.FieldObject.Portal;
-import unsw.dungeon.FieldObject.Wall;
+import unsw.dungeon.FieldObject.*;
 import unsw.dungeon.Item.InvincibilityPotion;
 import unsw.dungeon.Item.Key;
 import unsw.dungeon.Item.Sword;
@@ -103,6 +100,18 @@ public class DungeonControllerLoader extends DungeonLoader {
     public void onLoad(Key key) {
         ImageView view = new ImageView(keyImage);
         addEntity(key, view);
+    }
+
+    @Override
+    public void onLoad(Boulder boulder) {
+        ImageView view = new ImageView(boulderImage);
+        addEntity(boulder, view);
+    }
+
+    @Override
+    public void onLoad(FloorSwitch floorSwitch) {
+        ImageView view = new ImageView(floorSwitchImage);
+        addEntity(floorSwitch, view);
     }
 
     @Override
