@@ -1,4 +1,4 @@
-package unsw.dungeon.Test;
+package Test;
 
 import unsw.dungeon.Enum.ItemCategory;
 import unsw.dungeon.Item.InvincibilityPotion;

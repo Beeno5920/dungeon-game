@@ -1,4 +1,4 @@
-package unsw.dungeon.Test;
+package Test;
 
 import unsw.dungeon.Character.Enemy;
 import unsw.dungeon.Enum.CharacterStatus;

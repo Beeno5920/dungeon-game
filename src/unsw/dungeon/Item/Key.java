@@ -15,7 +15,8 @@ public class Key extends Item {
 
     @Override
     public void use(Player player) {
-        if (door != null && door.unlock(this))
+        int[] position = player.getFacingPosition();
+        if (door != null && player.getEntities(position[0], position[1]).contains(door) && door.unlock(this))
             player.discardItem(this);
     }
 
