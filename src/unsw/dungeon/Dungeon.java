@@ -123,7 +123,7 @@ public class Dungeon implements Observer {
 
     @Override
     public void update(Entity entity) {
-        if (goal.checkSelf()) {
+        if (goal != null && goal.checkSelf()) {
             System.out.println("Congratulation! You passed this level!");
         }
     }
