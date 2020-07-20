@@ -39,7 +39,8 @@ public class Enemy extends Character implements Observer, Observable {
     }
 
     private boolean canMove(int x, int y) {
-        if (x < 0 || x >= getDungeon().getWidth() || y < 0 || y >= getDungeon().getHeight())
+        if (x < 0 || x >= getDungeon().getWidth() || y < 0 || y >= getDungeon().getHeight()
+                || getCharacterStatus().equals(CharacterStatus.DEAD))
             return false;
         for (Entity entity : getDungeon().getEntities(x, y)) {
             if (entity instanceof FieldObject && ((FieldObject) entity).isObstacle())
@@ -132,22 +133,6 @@ public class Enemy extends Character implements Observer, Observable {
             }
             trackPlayer();
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Enemy enemy = (Enemy) o;
-        return speed == enemy.speed &&
-                Arrays.equals(playerPosition, enemy.playerPosition);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(speed);
-        result = 31 * result + Arrays.hashCode(playerPosition);
-        return result;
     }
 
     @Override

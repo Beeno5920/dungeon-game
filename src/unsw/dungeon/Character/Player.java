@@ -19,6 +19,8 @@ public class Player extends Character implements Observable {
     private Map<ItemCategory, List<Item>> items;
     private Map<ItemCategory, Integer> itemLimit;
     private Set<Observer> observers;
+    private List<Observer> observersToRemove;
+
     /**
      * Create a player positioned in square (x,y)
      * @param x
@@ -29,6 +31,7 @@ public class Player extends Character implements Observable {
         observers = new HashSet<>();
         this.items= new EnumMap<ItemCategory, List<Item>>(ItemCategory.class);
         this.itemLimit = new EnumMap<ItemCategory, Integer>(ItemCategory.class);
+        observersToRemove = new ArrayList<>();
 
         initItemLimit();
     }
@@ -43,12 +46,14 @@ public class Player extends Character implements Observable {
         for (Entity entity : entities) {
             if (entity instanceof Item) {
                 ItemCategory itemCategory = ((Item) entity).getItemCategory();
+                System.out.println("You picked up a " + itemCategory);
                 ((Item) entity).onPick(this);
                 items.putIfAbsent(itemCategory, new ArrayList<>());
                 if (itemLimit.containsKey(itemCategory) && itemLimit.get(itemCategory) == items.get(itemCategory).size())
                     continue;
                 items.get(itemCategory).add((Item) entity);
                 getDungeon().removeEntity(entity.getX(), entity.getY(), entity);
+                notifyAllObservers();
                 return (Item) entity;
             }
         }
@@ -59,6 +64,7 @@ public class Player extends Character implements Observable {
         if (!items.containsKey(itemCategory) || items.getOrDefault(itemCategory, new ArrayList<>()).size() == 0)
             return false;
         items.get(itemCategory).get(0).use(this);
+        notifyAllObservers();
         return true;
     }
 
@@ -72,6 +78,7 @@ public class Player extends Character implements Observable {
                 return true;
             }
         }
+        notifyAllObservers();
         return false;
     }
 
@@ -107,6 +114,7 @@ public class Player extends Character implements Observable {
 
     @Override
     public void notifyAllObservers() {
+        observers.removeAll(observersToRemove);
         for (Observer observer : observers)
             notify(observer);
     }
@@ -118,7 +126,8 @@ public class Player extends Character implements Observable {
 
     @Override
     public void removeObserver(Observer observer) {
-        observers.remove(observer);
+        // observers.remove(observer);
+        observersToRemove.add(observer);
     }
 
     @Override
