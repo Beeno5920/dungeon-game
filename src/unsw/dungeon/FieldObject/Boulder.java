@@ -70,6 +70,10 @@ public class Boulder extends FieldObject implements Observable, Observer {
         observers.remove(observer);
     }
 
+    public List<Observer> getObservers() {
+        return observers;
+    }
+
     @Override
     public void update(Entity entity) {
         if (entity instanceof Character)

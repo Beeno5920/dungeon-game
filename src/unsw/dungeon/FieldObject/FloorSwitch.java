@@ -1,6 +1,7 @@
 package unsw.dungeon.FieldObject;
 
 import unsw.dungeon.Character.Character;
+import unsw.dungeon.Dungeon;
 import unsw.dungeon.Entity;
 import unsw.dungeon.Observer;
 
@@ -26,7 +27,12 @@ public class FloorSwitch extends FieldObject implements Observer {
 
     @Override
     public void interact(Character character) {
-
+        int[] pos = character.getFacingPosition();
+        for (Entity entity : character.getDungeon().getEntities(getX(), getY())) {
+            if (entity instanceof Boulder && !((Boulder) entity).isObstacle() && isSamePosition(pos[0], pos[1])) {
+                deactivate();
+            }
+        }
     }
 
     @Override
@@ -34,8 +40,10 @@ public class FloorSwitch extends FieldObject implements Observer {
         if (entity instanceof Boulder) {
             if (entity.isSamePosition(getX(), getY()))
                 trigger();
-            else if (this.isTriggered)
-                deactivate();
+            for (Observer observer : ((Boulder) entity).getObservers()) {
+                if (observer instanceof Dungeon)
+                    observer.update(this);
+            }
         }
     }
 }
