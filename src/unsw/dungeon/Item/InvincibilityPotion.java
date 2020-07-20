@@ -20,11 +20,9 @@ public class InvincibilityPotion extends Item {
     }
 
     public void tick(double seconds) {
-        if (seconds < 5.0) {
-            System.out.println("You are invincible!");
-        } else {
+        if (seconds >= 5.0) {
             player.setCharacterStatus(CharacterStatus.NORMAL);
-            System.out.println(player.getCharacterStatus());
+            System.out.println("You are back to normal");
         }
     }
 
@@ -34,5 +32,6 @@ public class InvincibilityPotion extends Item {
         player.setCharacterStatus(CharacterStatus.INVINCIBLE);
         player.notifyAllObservers();
         timeline.playFromStart();
+        System.out.println("You now are invincible!");
     }
 }

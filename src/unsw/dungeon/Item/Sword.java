@@ -18,11 +18,10 @@ public class Sword extends Item {
     @Override
     public void use(Player player) {
         int[] position = player.getFacingPosition();
-
+        System.out.println("Attacking " + player.getOrientation());
         for (Entity entity : player.getEntities(position[0], position[1])) {
             if (entity instanceof Enemy) {
                 ((Enemy) entity).die();
-                //TODO Remove the image of the enemy
                 if (--durability == 0)
                     player.discardItem(this);
                 break;
