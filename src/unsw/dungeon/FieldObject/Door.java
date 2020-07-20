@@ -10,8 +10,8 @@ import java.util.Objects;
 public class Door extends FieldObject {
     private Key key;
 
-    public Door(int x, int y, boolean isObstacle) {
-        super(x, y, isObstacle);
+    public Door(int x, int y) {
+        super(x, y, true);
     }
 
     @Override

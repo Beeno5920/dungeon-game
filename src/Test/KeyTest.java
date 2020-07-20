@@ -12,7 +12,7 @@ public class KeyTest extends EntityTest {
     void testUseKeyOnCorrectDoor() {
         int x = player.getX(), y = player.getY();
         Key key = new Key(x, y);
-        Door door = new Door(x + 1, y, true);
+        Door door = new Door(x + 1, y);
         key.setDoor(door);
         door.setKey(key);
 
@@ -35,8 +35,8 @@ public class KeyTest extends EntityTest {
         // key1 <-> door1; key2 <-> door2
         Key key1 = new Key(x, y);
         Key key2 = new Key(x + 1, y + 1);
-        Door door1 = new Door(x + 2, y + 1, true);
-        Door door2 = new Door(x + 1, y, true);
+        Door door1 = new Door(x + 2, y + 1);
+        Door door2 = new Door(x + 1, y);
         key1.setDoor(door1);
         key2.setDoor(door2);
         door1.setKey(key1);

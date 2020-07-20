@@ -128,7 +128,7 @@ public abstract class DungeonLoader {
                 entity = treasure;
                 break;
             case "door":
-                Door door = new Door(x, y, true);
+                Door door = new Door(x, y);
                 id = json.getInt("id");
                 if (!keyDoorPairMap.containsKey(id))
                     keyDoorPairMap.put(id, new KeyDoorPair(door));
