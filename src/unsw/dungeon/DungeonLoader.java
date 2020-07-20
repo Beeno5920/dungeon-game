@@ -2,10 +2,7 @@ package unsw.dungeon;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,11 +11,14 @@ import unsw.dungeon.Character.Enemy;
 import unsw.dungeon.Character.Player;
 import unsw.dungeon.Enum.ItemCategory;
 import unsw.dungeon.FieldObject.Door;
+import unsw.dungeon.FieldObject.Exit;
 import unsw.dungeon.FieldObject.Portal;
 import unsw.dungeon.FieldObject.Wall;
+import unsw.dungeon.Goal.*;
 import unsw.dungeon.Item.InvincibilityPotion;
 import unsw.dungeon.Item.Key;
 import unsw.dungeon.Item.Sword;
+import unsw.dungeon.Item.Treasure;
 
 /**
  * Loads a dungeon from a .json file.
@@ -56,9 +56,45 @@ public abstract class DungeonLoader {
         for (int i = 0; i < jsonEntities.length(); i++) {
             loadEntity(dungeon, jsonEntities.getJSONObject(i));
         }
-        //TODO Assign observers
+
+        MainGoal mainGoal =  new MainGoal(dungeon);
+        mainGoal.addSubGoal(constructGoal(dungeon, json.getJSONObject("goal-condition")));
+        dungeon.setGoal(mainGoal);
+
         dungeon.assignObservers();
         return dungeon;
+    }
+
+    private Goal constructGoal(Dungeon dungeon, JSONObject jsonObject) {
+        Goal goal = null;
+
+        if (jsonObject.has("subgoals")) {
+            switch (jsonObject.getString("goal")) {
+                case "AND":
+                    goal = new AndGoal();
+                    break;
+                case "OR":
+                    goal = new OrGoal();
+                    break;
+            }
+            JSONArray subgoals = jsonObject.getJSONArray("subgoals");
+            for (int i = 0; i < subgoals.length(); i++)
+                goal.addSubGoal(constructGoal(dungeon, subgoals.getJSONObject(i)));
+        } else {
+            switch (jsonObject.getString("goal")) {
+                case "exit":
+                    goal = new ExitGoal(dungeon);
+                    break;
+                case "enemies":
+                    goal = new KillAllEnemiesGoal(dungeon);
+                    break;
+                case "treasure":
+                    goal = new TreasureGoal(dungeon);
+                    break;
+            }
+        }
+
+        return goal;
     }
 
     private void loadEntity(Dungeon dungeon, JSONObject json) {
@@ -81,6 +117,16 @@ public abstract class DungeonLoader {
                 entity = wall;
                 break;
         // TODO Handle other possible entities
+            case "exit":
+                Exit exit = new Exit(x, y);
+                onLoad(exit);
+                entity = exit;
+                break;
+            case "treasure":
+                Treasure treasure = new Treasure(x, y);
+                onLoad(treasure);
+                entity = treasure;
+                break;
             case "door":
                 Door door = new Door(x, y, true);
                 id = json.getInt("id");
@@ -88,6 +134,7 @@ public abstract class DungeonLoader {
                     keyDoorPairMap.put(id, new KeyDoorPair(door));
                 else
                     keyDoorPairMap.get(id).addDoor(door);
+                onLoad(door);
                 entity = door;
                 break;
             case "key":
@@ -97,6 +144,7 @@ public abstract class DungeonLoader {
                     keyDoorPairMap.put(id, new KeyDoorPair(key));
                 else
                     keyDoorPairMap.get(id).addKey(key);
+                onLoad(key);
                 entity = key;
                 break;
             case "portal":
@@ -106,6 +154,7 @@ public abstract class DungeonLoader {
                     portalPairMap.put(id, new PortalPair(portal));
                 else
                     portalPairMap.get(id).addPortal(portal);
+                onLoad(portal);
                 entity = portal;
                 break;
             case "enemy":
@@ -132,7 +181,19 @@ public abstract class DungeonLoader {
     public abstract void onLoad(Wall wall);
 
     // TODO Create additional abstract methods for the other entities
+    public abstract void onLoad(Exit exit);
+
+    public abstract void onLoad(Treasure treasure);
+
+    public abstract void onLoad(Door door);
+
     public abstract void onLoad(Key key);
+
+    // public abstract void onLoad(Boulder boulder);
+
+    // public abstract void onLoad(FloorSwitch floorSwitch);
+
+    public abstract void onLoad(Portal portal);
 
     public abstract void onLoad(Enemy enemy);
 

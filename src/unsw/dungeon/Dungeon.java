@@ -7,6 +7,7 @@ import unsw.dungeon.Character.Enemy;
 import unsw.dungeon.Character.Player;
 import unsw.dungeon.FieldObject.FieldObject;
 import unsw.dungeon.FieldObject.Wall;
+import unsw.dungeon.Goal.Goal;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,17 +23,19 @@ import java.util.List;
  * @author Robert Clifton-Everest
  *
  */
-public class Dungeon {
+public class Dungeon implements Observer {
 
     private int width, height;
     private Map<String, List<Entity>> entities;
     private Player player;
+    private Goal goal;
 
     public Dungeon(int width, int height) {
         this.width = width;
         this.height = height;
         this.entities = new HashMap<>();
         this.player = null;
+        this.goal = null;
     }
 
     public int getWidth() {
@@ -48,7 +51,12 @@ public class Dungeon {
     }
 
     public void setPlayer(Player player) {
+        player.addObserver(this);
         this.player = player;
+    }
+
+    public void setGoal(Goal goal) {
+        this.goal = goal;
     }
 
     private String constructKey(int x, int y) {
@@ -111,5 +119,12 @@ public class Dungeon {
         }
 
         return groups;
+    }
+
+    @Override
+    public void update(Entity entity) {
+        if (goal.checkSelf()) {
+            System.out.println("Congratulation! You passed this level!");
+        }
     }
 }
