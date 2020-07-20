@@ -10,10 +10,7 @@ import org.json.JSONTokener;
 import unsw.dungeon.Character.Enemy;
 import unsw.dungeon.Character.Player;
 import unsw.dungeon.Enum.ItemCategory;
-import unsw.dungeon.FieldObject.Door;
-import unsw.dungeon.FieldObject.Exit;
-import unsw.dungeon.FieldObject.Portal;
-import unsw.dungeon.FieldObject.Wall;
+import unsw.dungeon.FieldObject.*;
 import unsw.dungeon.Goal.*;
 import unsw.dungeon.Item.InvincibilityPotion;
 import unsw.dungeon.Item.Key;
@@ -91,6 +88,9 @@ public abstract class DungeonLoader {
                 case "treasure":
                     goal = new TreasureGoal(dungeon);
                     break;
+                case "boulders":
+                    goal = new BouldersGoal(dungeon);
+                    break;
             }
         }
 
@@ -147,8 +147,18 @@ public abstract class DungeonLoader {
                 onLoad(key);
                 entity = key;
                 break;
+            case "boulder":
+                Boulder boulder = new Boulder(x, y);
+                onLoad(boulder);
+                entity = boulder;
+                break;
+            case "switch":
+                FloorSwitch floorSwitch = new FloorSwitch(x, y);
+                onLoad(floorSwitch);
+                entity = floorSwitch;
+                break;
             case "portal":
-                Portal portal = new Portal(x, y, false);
+                Portal portal = new Portal(x, y);
                 id = json.getInt("id");
                 if (!portalPairMap.containsKey(id))
                     portalPairMap.put(id, new PortalPair(portal));
@@ -189,9 +199,9 @@ public abstract class DungeonLoader {
 
     public abstract void onLoad(Key key);
 
-    // public abstract void onLoad(Boulder boulder);
+    public abstract void onLoad(Boulder boulder);
 
-    // public abstract void onLoad(FloorSwitch floorSwitch);
+    public abstract void onLoad(FloorSwitch floorSwitch);
 
     public abstract void onLoad(Portal portal);
 

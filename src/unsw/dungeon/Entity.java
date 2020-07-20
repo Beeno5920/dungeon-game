@@ -39,4 +39,8 @@ public class Entity {
     public int getX() {
         return x().get();
     }
+
+    public boolean isSamePosition(int x, int y) {
+        return getX() == x && getY() == y;
+    }
 }
