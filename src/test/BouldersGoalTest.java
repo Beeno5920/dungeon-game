@@ -1,4 +1,4 @@
-package Test;
+package test;
 
 import unsw.dungeon.FieldObject.Boulder;
 import unsw.dungeon.FieldObject.FloorSwitch;

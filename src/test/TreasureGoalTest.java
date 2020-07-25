@@ -1,4 +1,4 @@
-package Test;
+package test;
 
 import unsw.dungeon.Goal.TreasureGoal;
 import unsw.dungeon.Item.Treasure;

@@ -28,7 +28,7 @@ import java.io.File;
  */
 public class DungeonControllerLoader extends DungeonLoader {
 
-    private List<ImageView> entities;
+    private List<PriorityImageView> entities;
 
     //Images
     private final Image playerImage;
@@ -140,7 +140,8 @@ public class DungeonControllerLoader extends DungeonLoader {
 
     private void addEntity(Entity entity, ImageView view) {
         trackPosition(entity, view);
-        entities.add(view);
+        entity.setImageView(view);
+        entities.add(new PriorityImageView(view, entity.getLayerLevel().ordinal()));
     }
 
     /**
@@ -170,6 +171,13 @@ public class DungeonControllerLoader extends DungeonLoader {
                 GridPane.setRowIndex(node, newValue.intValue());
             }
         });
+        entity.getVisibility().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue,
+                                Boolean aBoolean, Boolean t1) {
+                node.setVisible(entity.isVisible());
+            }
+        });
     }
 
     /**
@@ -181,6 +189,4 @@ public class DungeonControllerLoader extends DungeonLoader {
     public DungeonController loadController() throws FileNotFoundException {
         return new DungeonController(load(), entities);
     }
-
-
 }

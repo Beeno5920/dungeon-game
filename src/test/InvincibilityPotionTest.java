@@ -1,4 +1,4 @@
-package Test;
+package test;
 
 import unsw.dungeon.Enum.CharacterStatus;
 import unsw.dungeon.Item.InvincibilityPotion;

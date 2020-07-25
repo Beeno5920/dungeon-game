@@ -8,9 +8,6 @@ import unsw.dungeon.Enum.Orientation;
 import unsw.dungeon.FieldObject.FieldObject;
 import unsw.dungeon.Observer;
 
-import java.util.List;
-import java.util.ArrayList;
-
 public abstract class Character extends Entity {
     private Dungeon dungeon;
     private CharacterStatus characterStatus;
@@ -23,6 +20,12 @@ public abstract class Character extends Entity {
         orientation = Orientation.DOWN;
     }
 
+    /**
+     * Interact with the object at the position (x, y), then check if the character can move to the position.
+     * @param x x coordinate
+     * @param y y coordinate
+     * @return  true if character can move to the point, false otherwise.
+     */
     public boolean canMoveTo(int x, int y) {
         if (x < 0 || x >= dungeon.getWidth() || y < 0 || y >= dungeon.getHeight() || characterStatus.equals(CharacterStatus.DEAD))
             return false;
@@ -80,14 +83,11 @@ public abstract class Character extends Entity {
         notifyAllObservers();
     }
 
-    public boolean isSamePosition(int x, int y) {
-        return getX() == x && getY() == y;
-    }
-
-    public int[] getPosition() {
-        return new int[] {getX(), getY()};
-    }
-
+    /**
+     * Get the position which is one square away from the orientation.
+     * @return  The facing position in the form of a size 2 integer array,
+     * where the first element is the x coordinate and the second element is the y coordinate.
+     */
     public int[] getFacingPosition() {
         int[] facingPosition = getPosition();
         if (orientation == Orientation.UP)
@@ -115,6 +115,11 @@ public abstract class Character extends Entity {
 
     public void setCharacterStatus(CharacterStatus characterStatus) {
         this.characterStatus = characterStatus;
+        System.out.println("You are " + characterStatus);
+    }
+
+    public boolean characterStatusEquals(CharacterStatus characterStatus) {
+        return this.characterStatus.equals(characterStatus);
     }
 
     public void setOrientation(Orientation orientation) {

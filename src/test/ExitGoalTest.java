@@ -1,4 +1,4 @@
-package Test;
+package test;
 
 import unsw.dungeon.FieldObject.Exit;
 import unsw.dungeon.Goal.ExitGoal;

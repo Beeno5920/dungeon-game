@@ -67,6 +67,7 @@ public class Dungeon implements Observer {
         String key = constructKey(x, y);
         entities.putIfAbsent(key, new ArrayList<>());
         entities.get(key).add(entity);
+        entity.setVisibility(true);
     }
 
     public List<Entity> getEntities(int x, int y) {
@@ -76,6 +77,7 @@ public class Dungeon implements Observer {
 
     public void removeEntity(int x, int y, Entity entity) {
         entities.getOrDefault(constructKey(x, y), new ArrayList<>()).remove(entity);
+        entity.setVisibility(false);
     }
 
     public void removeAllSameEntities(int x, int y, Entity entity) {

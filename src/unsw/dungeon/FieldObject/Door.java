@@ -1,14 +1,14 @@
 package unsw.dungeon.FieldObject;
 
+import javafx.scene.image.Image;
 import unsw.dungeon.Character.Character;
-import unsw.dungeon.Character.Player;
 import unsw.dungeon.Item.Key;
 
-import java.util.Objects;
+import java.io.File;
 
-// Sample for testing DungeonLoader and stop IDE for complaining
 public class Door extends FieldObject {
     private Key key;
+    private final Image openedDoorImage = new Image((new File("images/open_door.png").toURI().toString()));
 
     public Door(int x, int y) {
         super(x, y, true);
@@ -23,6 +23,7 @@ public class Door extends FieldObject {
         if (!key.equals(this.key))
             return false;
         setObstacle(false);
+        setImage(openedDoorImage);
         return true;
     }
 

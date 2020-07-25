@@ -1,4 +1,4 @@
-package Test;
+package test;
 
 import unsw.dungeon.Enum.ItemCategory;
 import unsw.dungeon.FieldObject.Door;

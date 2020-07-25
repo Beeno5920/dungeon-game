@@ -11,36 +11,45 @@ import javafx.animation.Timeline;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.util.Duration;
+import unsw.dungeon.util.PathFinder;
+import unsw.dungeon.util.algorithms.Astar;
 
 import java.util.*;
 
 public class Enemy extends Character implements Observer, Observable {
     private int speed;
-    private Player player;
     private int[] playerPosition;
     private Set<Observer> observers;
 
-    private final int[][] dirs = new int[][] {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-    private List<Node> path = new ArrayList<>();
+    private PathFinder pathFinder;
+    private List<PathFinder.Node> path;
 
-    private Timeline timeline;
+    private Timeline moveTimeline, searchTimeline;
+    private boolean isSearching;
 
     public Enemy(Dungeon dungeon, int x, int y) {
         super(dungeon, x, y);
         this.speed = 5;
-        this.player = dungeon.getPlayer();
-        this.playerPosition = player.getPosition();
+        this.playerPosition = dungeon.getPlayer().getPosition();
         this.observers = new HashSet<>();
-        this.timeline = new Timeline();
+        this.pathFinder = new PathFinder(new Astar(this, getPosition(), playerPosition));
+        this.path = new ArrayList<>();
+        this.moveTimeline = new Timeline();
+        this.searchTimeline = new Timeline();
+        this.isSearching = false;
 
-        timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(speed / 10.0), e -> move()));
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.playFromStart();
+        moveTimeline.getKeyFrames().add(new KeyFrame(Duration.seconds(speed / 10.0), e -> move()));
+        searchTimeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1), e -> trackPlayer()));
+        moveTimeline.setCycleCount(Animation.INDEFINITE);
+        searchTimeline.setCycleCount(Animation.INDEFINITE);
+        moveTimeline.playFromStart();
+        searchTimeline.playFromStart();
     }
 
-    private boolean canMove(int x, int y) {
+
+    public boolean canMoveTo(int x, int y) {
         if (x < 0 || x >= getDungeon().getWidth() || y < 0 || y >= getDungeon().getHeight()
-                || getCharacterStatus().equals(CharacterStatus.DEAD))
+                || characterStatusEquals(CharacterStatus.DEAD))
             return false;
         for (Entity entity : getDungeon().getEntities(x, y)) {
             if (entity instanceof FieldObject && ((FieldObject) entity).isObstacle())
@@ -49,71 +58,54 @@ public class Enemy extends Character implements Observer, Observable {
         return true;
     }
 
-    private int getHeuristic(int x, int y) {
-        return (int) (Math.pow(x - playerPosition[0], 2) + Math.pow(y - playerPosition[1], 2));
-    }
-
-    private void constructPath(Node end) {
-        while (end.prev != null) {
-            path.add(0, end);
-            end = end.prev;
-        }
-    }
-
-    private void Astar() {
-        if (player.getCharacterStatus().equals(CharacterStatus.DEAD))
-            return;
-
-        PriorityQueue<Node> toExplore = new PriorityQueue<>((a, b) -> (int) (a.dist - b.dist));
-        boolean escape = player.getCharacterStatus().equals(CharacterStatus.INVINCIBLE);
-        if (escape)
-            toExplore = new PriorityQueue<>((a, b) -> (int) (b.dist - a.dist));
-        toExplore.add(new Node(getX(), getY(), getHeuristic(playerPosition[0], playerPosition[1])));
-
-        while (!toExplore.isEmpty()) {
-            Node curr = toExplore.poll();
-            if (curr.x == playerPosition[0] && curr.y == playerPosition[1] || (escape && toExplore.size() > 20)) {
-                constructPath(curr);
-                return;
-            }
-            for (int[] dir : dirs) {
-                int x = curr.x + dir[0], y = curr.y + dir[1];
-                if (canMove(x, y)) {
-                    Node next = new Node(x, y, curr.dist + getHeuristic(x, y));
-                    next.prev = curr;
-                    toExplore.add(next);
-                }
-            }
-        }
-    }
-
     private void move() {
         if (path.isEmpty())
             return;
 
         int x = getX(), y = getY();
-        if (playerPosition[0] == x && playerPosition[1] == y)
+        if (getDungeon().getPlayer().getCharacterStatus().equals(CharacterStatus.INVINCIBLE)
+                && isSamePosition(playerPosition))
             die();
 
-        Node next = path.remove(0);
-        x().set(next.x);
-        y().set(next.y);
+        PathFinder.Node next = path.remove(0);
+        if (!canMoveTo(next.x, next.y)) {
+            path.clear();
+            return;
+        }
+        setPosition(next.x, next.y);
         getDungeon().changeEntityPosition(x, y, this);
-        if (getX() == player.getX() && getY() == player.getY())
-            player.setCharacterStatus(CharacterStatus.DEAD);
+        if (isSamePosition(playerPosition))
+            getDungeon().getPlayer().setCharacterStatus(CharacterStatus.DEAD);
+        if (getDungeon().getPlayer().characterStatusEquals(CharacterStatus.DEAD))
+            stopTimelines();
+        notifyAllObservers();
     }
 
     public void trackPlayer() {
+        if (!isSearching)
+            return;
+        if (getDungeon().getPlayer().characterStatusEquals(CharacterStatus.INVINCIBLE))
+            pathFinder.setNegation(true);
+        else
+            pathFinder.setNegation(false);
+        path = pathFinder.findPath();
+    }
+
+    public void clearPath() {
         path.clear();
-        Astar();
     }
 
     public void die() {
-        timeline.stop();
+        stopTimelines();
         setCharacterStatus(CharacterStatus.DEAD);
-        player.removeObserver(this);
+        getDungeon().getPlayer().removeObserver(this);
         getDungeon().removeEntity(getX(), getY(), this);
         return;
+    }
+
+    public void stopTimelines() {
+        moveTimeline.stop();
+        searchTimeline.stop();
     }
 
     public int[] getPlayerPosition() {
@@ -123,14 +115,16 @@ public class Enemy extends Character implements Observer, Observable {
     @Override
     public void update(Entity entity) {
         if (entity instanceof Player) {
-            playerPosition = ((Player) entity).getPosition();
-            if (((Player) entity).isSamePosition(getX(), getY())) {
+            playerPosition = entity.getPosition();
+            pathFinder.setEndPoint(playerPosition);
+            if (entity.isSamePosition(getPosition())) {
                 if (((Player) entity).getCharacterStatus().equals(CharacterStatus.INVINCIBLE))
                     die();
                 else
                     ((Player) entity).setCharacterStatus(CharacterStatus.DEAD);
                 return;
             }
+            isSearching = true;
             trackPlayer();
         }
     }
@@ -163,18 +157,5 @@ public class Enemy extends Character implements Observer, Observable {
     public void setSpeed(int speed) {
         if (speed > 0)
             this.speed = speed;
-    }
-
-    private class Node {
-        int x, y;
-        long dist;
-        Node prev;
-
-        public Node(int x, int y, long dist) {
-            this.x = x;
-            this.y = y;
-            this.dist = dist;
-            this.prev = null;
-        }
     }
 }
