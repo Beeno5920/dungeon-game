@@ -7,16 +7,15 @@ import java.util.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-import unsw.dungeon.Character.Enemy;
-import unsw.dungeon.Character.Player;
-import unsw.dungeon.Enum.ItemCategory;
-import unsw.dungeon.Enum.LayerLevel;
-import unsw.dungeon.FieldObject.*;
-import unsw.dungeon.Goal.*;
-import unsw.dungeon.Item.InvincibilityPotion;
-import unsw.dungeon.Item.Key;
-import unsw.dungeon.Item.Sword;
-import unsw.dungeon.Item.Treasure;
+import unsw.dungeon.characters.Enemy;
+import unsw.dungeon.characters.Player;
+import unsw.dungeon.enums.LayerLevel;
+import unsw.dungeon.fieldobjects.*;
+import unsw.dungeon.goals.*;
+import unsw.dungeon.items.InvincibilityPotion;
+import unsw.dungeon.items.Key;
+import unsw.dungeon.items.Sword;
+import unsw.dungeon.items.Treasure;
 
 /**
  * Loads a dungeon from a .json file.

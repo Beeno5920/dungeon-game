@@ -1,10 +1,10 @@
 package test;
 
 import org.junit.jupiter.api.Test;
-import unsw.dungeon.Character.Enemy;
-import unsw.dungeon.Enum.CharacterStatus;
-import unsw.dungeon.Enum.ItemCategory;
-import unsw.dungeon.Item.Sword;
+import unsw.dungeon.characters.Enemy;
+import unsw.dungeon.enums.CharacterStatus;
+import unsw.dungeon.enums.ItemCategory;
+import unsw.dungeon.items.Sword;
 
 import java.util.ArrayList;
 import java.util.List;

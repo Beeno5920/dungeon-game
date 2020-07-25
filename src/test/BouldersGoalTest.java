@@ -1,8 +1,8 @@
 package test;
 
-import unsw.dungeon.FieldObject.Boulder;
-import unsw.dungeon.FieldObject.FloorSwitch;
-import unsw.dungeon.Goal.BouldersGoal;
+import unsw.dungeon.fieldobjects.Boulder;
+import unsw.dungeon.fieldobjects.FloorSwitch;
+import unsw.dungeon.goals.BouldersGoal;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

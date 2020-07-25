@@ -1,9 +1,9 @@
 package test;
 
 import org.junit.jupiter.api.Test;
-import unsw.dungeon.Enum.ItemCategory;
-import unsw.dungeon.FieldObject.Door;
-import unsw.dungeon.Item.Key;
+import unsw.dungeon.enums.ItemCategory;
+import unsw.dungeon.fieldobjects.Door;
+import unsw.dungeon.items.Key;
 
 import static org.junit.jupiter.api.Assertions.*;
 

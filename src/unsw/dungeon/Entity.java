@@ -4,7 +4,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import unsw.dungeon.Enum.LayerLevel;
+import unsw.dungeon.enums.LayerLevel;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;

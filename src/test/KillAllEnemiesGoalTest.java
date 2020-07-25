@@ -1,9 +1,9 @@
 package test;
 
-import unsw.dungeon.Character.Enemy;
-import unsw.dungeon.Enum.ItemCategory;
-import unsw.dungeon.Goal.KillAllEnemiesGoal;
-import unsw.dungeon.Item.Sword;
+import unsw.dungeon.characters.Enemy;
+import unsw.dungeon.enums.ItemCategory;
+import unsw.dungeon.goals.KillAllEnemiesGoal;
+import unsw.dungeon.items.Sword;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

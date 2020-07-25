@@ -1,6 +1,6 @@
 package test;
 
-import unsw.dungeon.Enum.Orientation;
+import unsw.dungeon.enums.Orientation;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

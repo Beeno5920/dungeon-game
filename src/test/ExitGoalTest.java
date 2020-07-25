@@ -1,7 +1,7 @@
 package test;
 
-import unsw.dungeon.FieldObject.Exit;
-import unsw.dungeon.Goal.ExitGoal;
+import unsw.dungeon.fieldobjects.Exit;
+import unsw.dungeon.goals.ExitGoal;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

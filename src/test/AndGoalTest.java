@@ -1,14 +1,14 @@
 package test;
 
-import unsw.dungeon.Character.Enemy;
-import unsw.dungeon.Enum.ItemCategory;
-import unsw.dungeon.FieldObject.Exit;
-import unsw.dungeon.Goal.AndGoal;
-import unsw.dungeon.Goal.ExitGoal;
-import unsw.dungeon.Goal.KillAllEnemiesGoal;
-import unsw.dungeon.Goal.TreasureGoal;
-import unsw.dungeon.Item.Sword;
-import unsw.dungeon.Item.Treasure;
+import unsw.dungeon.characters.Enemy;
+import unsw.dungeon.enums.ItemCategory;
+import unsw.dungeon.fieldobjects.Exit;
+import unsw.dungeon.goals.AndGoal;
+import unsw.dungeon.goals.ExitGoal;
+import unsw.dungeon.goals.KillAllEnemiesGoal;
+import unsw.dungeon.goals.TreasureGoal;
+import unsw.dungeon.items.Sword;
+import unsw.dungeon.items.Treasure;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

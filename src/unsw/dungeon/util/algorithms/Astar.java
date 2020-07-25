@@ -1,6 +1,6 @@
 package unsw.dungeon.util.algorithms;
 
-import unsw.dungeon.Character.Character;
+import unsw.dungeon.characters.Character;
 import unsw.dungeon.util.PathFinder.Node;
 
 import java.util.*;

@@ -1,9 +1,9 @@
 package test;
 
-import unsw.dungeon.Enum.ItemCategory;
-import unsw.dungeon.Item.InvincibilityPotion;
-import unsw.dungeon.Item.Key;
-import unsw.dungeon.Item.Sword;
+import unsw.dungeon.enums.ItemCategory;
+import unsw.dungeon.items.InvincibilityPotion;
+import unsw.dungeon.items.Key;
+import unsw.dungeon.items.Sword;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

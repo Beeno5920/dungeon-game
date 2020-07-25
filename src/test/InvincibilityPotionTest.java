@@ -1,7 +1,7 @@
 package test;
 
-import unsw.dungeon.Enum.CharacterStatus;
-import unsw.dungeon.Item.InvincibilityPotion;
+import unsw.dungeon.enums.CharacterStatus;
+import unsw.dungeon.items.InvincibilityPotion;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

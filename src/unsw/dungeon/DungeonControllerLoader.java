@@ -10,13 +10,13 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import unsw.dungeon.Character.Enemy;
-import unsw.dungeon.Character.Player;
-import unsw.dungeon.FieldObject.*;
-import unsw.dungeon.Item.InvincibilityPotion;
-import unsw.dungeon.Item.Key;
-import unsw.dungeon.Item.Sword;
-import unsw.dungeon.Item.Treasure;
+import unsw.dungeon.characters.Enemy;
+import unsw.dungeon.characters.Player;
+import unsw.dungeon.fieldobjects.*;
+import unsw.dungeon.items.InvincibilityPotion;
+import unsw.dungeon.items.Key;
+import unsw.dungeon.items.Sword;
+import unsw.dungeon.items.Treasure;
 
 import java.io.File;
 

@@ -9,8 +9,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
-import unsw.dungeon.Character.Player;
-import unsw.dungeon.Enum.ItemCategory;
+import unsw.dungeon.characters.Player;
+import unsw.dungeon.enums.ItemCategory;
 
 import java.io.File;
 

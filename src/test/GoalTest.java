@@ -1,12 +1,12 @@
 package test;
 
-import unsw.dungeon.Character.Enemy;
-import unsw.dungeon.Character.Player;
+import unsw.dungeon.characters.Enemy;
+import unsw.dungeon.characters.Player;
 import unsw.dungeon.Dungeon;
-import unsw.dungeon.FieldObject.Exit;
-import unsw.dungeon.FieldObject.Wall;
-import unsw.dungeon.Goal.*;
-import unsw.dungeon.Item.Treasure;
+import unsw.dungeon.fieldobjects.Exit;
+import unsw.dungeon.fieldobjects.Wall;
+import unsw.dungeon.goals.*;
+import unsw.dungeon.items.Treasure;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,7 +1,7 @@
 package test;
 
-import unsw.dungeon.Goal.TreasureGoal;
-import unsw.dungeon.Item.Treasure;
+import unsw.dungeon.goals.TreasureGoal;
+import unsw.dungeon.items.Treasure;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

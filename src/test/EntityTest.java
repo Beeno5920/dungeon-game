@@ -1,8 +1,8 @@
 package test;
 
-import unsw.dungeon.Character.Player;
+import unsw.dungeon.characters.Player;
 import unsw.dungeon.Dungeon;
-import unsw.dungeon.FieldObject.Wall;
+import unsw.dungeon.fieldobjects.Wall;
 
 public class EntityTest {
     protected int WIDTH = 50;

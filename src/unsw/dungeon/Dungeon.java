@@ -3,11 +3,8 @@
  */
 package unsw.dungeon;
 
-import unsw.dungeon.Character.Enemy;
-import unsw.dungeon.Character.Player;
-import unsw.dungeon.FieldObject.FieldObject;
-import unsw.dungeon.FieldObject.Wall;
-import unsw.dungeon.Goal.Goal;
+import unsw.dungeon.characters.Player;
+import unsw.dungeon.goals.Goal;
 
 import java.util.ArrayList;
 import java.util.HashMap;

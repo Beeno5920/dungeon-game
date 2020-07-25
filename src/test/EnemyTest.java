@@ -1,7 +1,7 @@
 package test;
 
-import unsw.dungeon.Character.Enemy;
-import unsw.dungeon.Enum.CharacterStatus;
+import unsw.dungeon.characters.Enemy;
+import unsw.dungeon.enums.CharacterStatus;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

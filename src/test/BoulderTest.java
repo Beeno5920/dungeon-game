@@ -1,7 +1,7 @@
 package test;
 
 import org.junit.jupiter.api.Test;
-import unsw.dungeon.FieldObject.Boulder;
+import unsw.dungeon.fieldobjects.Boulder;
 
 import static org.junit.jupiter.api.Assertions.*;
 

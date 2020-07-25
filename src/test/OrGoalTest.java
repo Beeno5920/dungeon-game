@@ -1,11 +1,11 @@
 package test;
 
-import unsw.dungeon.Character.Enemy;
-import unsw.dungeon.Enum.ItemCategory;
-import unsw.dungeon.FieldObject.Exit;
-import unsw.dungeon.Goal.*;
-import unsw.dungeon.Item.Sword;
-import unsw.dungeon.Item.Treasure;
+import unsw.dungeon.characters.Enemy;
+import unsw.dungeon.enums.ItemCategory;
+import unsw.dungeon.fieldobjects.Exit;
+import unsw.dungeon.goals.*;
+import unsw.dungeon.items.Sword;
+import unsw.dungeon.items.Treasure;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
