@@ -1,4 +1,4 @@
-package Test;
+package test;
 
 import org.junit.jupiter.api.Test;
 import unsw.dungeon.FieldObject.Boulder;

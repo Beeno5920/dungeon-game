@@ -1,11 +1,15 @@
 package unsw.dungeon.FieldObject;
 
 import unsw.dungeon.Character.Character;
-import unsw.dungeon.Character.Player;
+import unsw.dungeon.Character.Enemy;
 import unsw.dungeon.Entity;
+import unsw.dungeon.Enum.CharacterStatus;
 import unsw.dungeon.Observer;
 
-// Sample for testing DungeonLoader and stop IDE for complaining
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+
 public class Portal extends FieldObject implements Observer {
     private Portal associatedPortal;
     private boolean isFunctioning;
@@ -17,7 +21,8 @@ public class Portal extends FieldObject implements Observer {
 
     @Override
     public void interact(Character character) {
-
+        if (character instanceof Enemy)
+            ((Enemy) character).clearPath();
     }
 
     private void teleport(Character character) {
@@ -25,9 +30,10 @@ public class Portal extends FieldObject implements Observer {
             return;
         int oldX = character.getX(), oldY = character.getY();
         associatedPortal.setFunctioning(false);
-        character.x().set(associatedPortal.getX());
-        character.y().set(associatedPortal.getY());
+        character.setPosition(associatedPortal.getX(), associatedPortal.getY());
         character.getDungeon().changeEntityPosition(oldX, oldY, character);
+        if (character instanceof Enemy)
+            ((Enemy) character).trackPlayer();
     }
 
     public Portal getAssociatedPortal() {
@@ -44,9 +50,11 @@ public class Portal extends FieldObject implements Observer {
 
     @Override
     public void update(Entity entity) {
-        if (entity instanceof Character && entity.isSamePosition(getX(), getY()))
+        if (entity instanceof Character && entity.isSamePosition(getX(), getY())) {
+            interact((Character) entity);
             teleport((Character) entity);
-        else
+        } else {
             isFunctioning = true;
+        }
     }
 }

@@ -1,6 +1,7 @@
 package unsw.dungeon;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javafx.fxml.FXML;
@@ -23,13 +24,13 @@ public class DungeonController {
     @FXML
     private GridPane squares;
 
-    private List<ImageView> initialEntities;
+    private List<PriorityImageView> initialEntities;
 
     private Player player;
 
     private Dungeon dungeon;
 
-    public DungeonController(Dungeon dungeon, List<ImageView> initialEntities) {
+    public DungeonController(Dungeon dungeon, List<PriorityImageView> initialEntities) {
         this.dungeon = dungeon;
         this.player = dungeon.getPlayer();
         this.initialEntities = new ArrayList<>(initialEntities);
@@ -46,8 +47,9 @@ public class DungeonController {
             }
         }
 
-        for (ImageView entity : initialEntities)
-            squares.getChildren().add(entity);
+        Collections.sort(initialEntities, (a, b) -> a.getPriority() - b.getPriority());
+        for (PriorityImageView priorityImageView : initialEntities)
+            squares.getChildren().add(priorityImageView.getImageView());
 
     }
 

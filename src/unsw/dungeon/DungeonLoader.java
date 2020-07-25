@@ -10,6 +10,7 @@ import org.json.JSONTokener;
 import unsw.dungeon.Character.Enemy;
 import unsw.dungeon.Character.Player;
 import unsw.dungeon.Enum.ItemCategory;
+import unsw.dungeon.Enum.LayerLevel;
 import unsw.dungeon.FieldObject.*;
 import unsw.dungeon.Goal.*;
 import unsw.dungeon.Item.InvincibilityPotion;
@@ -59,6 +60,8 @@ public abstract class DungeonLoader {
         dungeon.setGoal(mainGoal);
 
         dungeon.assignObservers();
+        keyDoorPairMap.clear();
+        portalPairMap.clear();
         return dungeon;
     }
 
@@ -107,6 +110,7 @@ public abstract class DungeonLoader {
         switch (type) {
             case "player":
                 Player player = new Player(dungeon, x, y);
+                player.setLayerLevel(LayerLevel.TOP);
                 dungeon.setPlayer(player);
                 onLoad(player);
                 entity = player;
@@ -124,6 +128,7 @@ public abstract class DungeonLoader {
                 break;
             case "treasure":
                 Treasure treasure = new Treasure(x, y);
+                treasure.setLayerLevel(LayerLevel.MIDDLE);
                 onLoad(treasure);
                 entity = treasure;
                 break;
@@ -139,6 +144,7 @@ public abstract class DungeonLoader {
                 break;
             case "key":
                 Key key = new Key(x, y);
+                key.setLayerLevel(LayerLevel.MIDDLE);
                 id = json.getInt("id");
                 if (!keyDoorPairMap.containsKey(id))
                     keyDoorPairMap.put(id, new KeyDoorPair(key));
@@ -149,6 +155,7 @@ public abstract class DungeonLoader {
                 break;
             case "boulder":
                 Boulder boulder = new Boulder(x, y);
+                boulder.setLayerLevel(LayerLevel.MIDDLE);
                 onLoad(boulder);
                 entity = boulder;
                 break;
@@ -169,16 +176,19 @@ public abstract class DungeonLoader {
                 break;
             case "enemy":
                 Enemy enemy = new Enemy(dungeon, x, y);
+                enemy.setLayerLevel(LayerLevel.TOP);
                 onLoad(enemy);
                 entity = enemy;
                 break;
             case "sword":
                 Sword sword = new Sword(x, y);
+                sword.setLayerLevel(LayerLevel.MIDDLE);
                 onLoad(sword);
                 entity = sword;
                 break;
             case "invincibility":
                 InvincibilityPotion invincibilityPotion = new InvincibilityPotion(x, y);
+                invincibilityPotion.setLayerLevel(LayerLevel.MIDDLE);
                 onLoad(invincibilityPotion);
                 entity = invincibilityPotion;
                 break;

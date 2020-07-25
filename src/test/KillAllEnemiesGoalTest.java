@@ -1,4 +1,4 @@
-package Test;
+package test;
 
 import unsw.dungeon.Character.Enemy;
 import unsw.dungeon.Enum.ItemCategory;
