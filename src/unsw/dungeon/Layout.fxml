@@ -8,38 +8,31 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<?import javafx.scene.text.Font?>
 <BorderPane onKeyPressed="#handleKeyPress" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <left>
-      <VBox style="-fx-font-size: 15pt;" prefHeight="200.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Label style="-fx-font-weight: bold; -fx-font-size: 25pt;" prefHeight="46.0" text="Instructions" textAlignment="CENTER" />
+            <Label prefHeight="46.0" prefWidth="100.0" text="Instructions" textAlignment="CENTER" />
             <Label prefHeight="26.0" prefWidth="100.0" text="Movement:" />
             <Label prefHeight="17.0" prefWidth="120.0" text="  Arrow Keys" textFill="#7c7c7c" />
             <Label prefHeight="26.0" prefWidth="100.0" text="Item pick up:" />
             <Label prefHeight="17.0" prefWidth="120.0" text="  Space" textFill="#7c7c7c" />
             <Label prefHeight="26.0" prefWidth="100.0" text="Open inventory:" />
             <Label prefHeight="17.0" prefWidth="120.0" text="  P" textFill="#7c7c7c" />
-            <Label />
-            <VBox fx:id="goals" prefHeight="200.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Label style="-fx-font-weight: bold; -fx-font-size: 25pt;" prefHeight="46.0" text= "Goals" textAlignment="CENTER" />
-               </children>
-            </VBox>
          </children>
       </VBox>
    </left>
    <center>
       <GridPane fx:id="squares" BorderPane.alignment="CENTER">
-         <columnConstraints>
-            <ColumnConstraints />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints />
-         </rowConstraints>
-         <children>
+          <columnConstraints>
+              <ColumnConstraints />
+          </columnConstraints>
+          <rowConstraints>
+              <RowConstraints />
+          </rowConstraints>
+          <children>
 
-         </children>
+          </children>
       </GridPane>
    </center>
 </BorderPane>

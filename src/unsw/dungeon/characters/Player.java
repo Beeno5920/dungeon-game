@@ -19,6 +19,7 @@ public class Player extends Character implements Observable {
     private Map<ItemCategory, Integer> itemLimit;
     private Set<Observer> observers;
     private List<Observer> observersToRemove;
+    private Item currItem;
 
     /**
      * Create a player positioned in square (x,y)
@@ -30,7 +31,8 @@ public class Player extends Character implements Observable {
         observers = new HashSet<>();
         this.items= new EnumMap<ItemCategory, List<Item>>(ItemCategory.class);
         this.itemLimit = new EnumMap<ItemCategory, Integer>(ItemCategory.class);
-        observersToRemove = new ArrayList<>();
+        this.observersToRemove = new ArrayList<>();
+        this.currItem = null;
 
         initItemLimit();
     }
@@ -68,6 +70,8 @@ public class Player extends Character implements Observable {
     }
 
     public boolean useItem(Item item) {
+        if (item == null)
+            return false;
         ItemCategory itemCategory = item.getItemCategory();
         if (!items.containsKey(itemCategory) || items.getOrDefault(itemCategory, new ArrayList<>()).size() == 0)
             return false;
@@ -79,6 +83,12 @@ public class Player extends Character implements Observable {
         }
         notifyAllObservers();
         return false;
+    }
+
+    public boolean hasItem(Item item) {
+        if (item == null)
+            return false;
+        return items.get(item.getItemCategory()).contains(item);
     }
 
     public void discardItem(Item item) {
@@ -96,6 +106,18 @@ public class Player extends Character implements Observable {
 
     public void discardAllItems() {
         items.clear();
+    }
+
+    public Map<ItemCategory, List<Item>> getItems() {
+        return items;
+    }
+
+    public void setCurrItem(Item currItem) {
+        this.currItem = currItem;
+    }
+
+    public Item getCurrItem() {
+        return currItem;
     }
 
     public List<Entity> getEntities(int x, int y) {

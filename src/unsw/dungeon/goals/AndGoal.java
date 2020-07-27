@@ -33,4 +33,9 @@ public class AndGoal implements Goal {
     public void removeSubGoal(Goal goal) {
         subGoals.remove(goal);
     }
+
+    @Override
+    public List<Goal> getGoals() {
+        return subGoals;
+    }
 }

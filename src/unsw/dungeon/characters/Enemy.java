@@ -1,11 +1,10 @@
 package unsw.dungeon.characters;
 
-import unsw.dungeon.Dungeon;
-import unsw.dungeon.Entity;
-import unsw.dungeon.enums.CharacterStatus;
-import unsw.dungeon.fieldobjects.FieldObject;
+import unsw.dungeon.*;
 import unsw.dungeon.Observable;
 import unsw.dungeon.Observer;
+import unsw.dungeon.enums.CharacterStatus;
+import unsw.dungeon.fieldobjects.FieldObject;
 
 import javafx.animation.Timeline;
 import javafx.animation.Animation;
@@ -16,7 +15,7 @@ import unsw.dungeon.util.algorithms.Astar;
 
 import java.util.*;
 
-public class Enemy extends Character implements Observer, Observable {
+public class Enemy extends Character implements Observer, Observable, TimeDependent {
     private int speed;
     private int[] playerPosition;
     private Set<Observer> observers;
@@ -157,5 +156,16 @@ public class Enemy extends Character implements Observer, Observable {
     public void setSpeed(int speed) {
         if (speed > 0)
             this.speed = speed;
+    }
+
+    @Override
+    public void start() {
+        moveTimeline.playFromStart();
+        searchTimeline.playFromStart();
+    }
+
+    @Override
+    public void stop() {
+        stopTimelines();
     }
 }

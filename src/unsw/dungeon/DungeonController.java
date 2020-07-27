@@ -1,14 +1,19 @@
 package unsw.dungeon;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import unsw.dungeon.characters.Player;
 import unsw.dungeon.enums.ItemCategory;
 
@@ -24,16 +29,29 @@ public class DungeonController {
     @FXML
     private GridPane squares;
 
+    @FXML
+    private VBox goals;
+
     private List<PriorityImageView> initialEntities;
 
     private Player player;
 
     private Dungeon dungeon;
 
+    private SceneSelector sceneSelector = null;
+
     public DungeonController(Dungeon dungeon, List<PriorityImageView> initialEntities) {
         this.dungeon = dungeon;
         this.player = dungeon.getPlayer();
         this.initialEntities = new ArrayList<>(initialEntities);
+    }
+
+    public void setSceneSelector(SceneSelector sceneSelector) {
+        this.sceneSelector = sceneSelector;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     @FXML
@@ -51,10 +69,13 @@ public class DungeonController {
         for (PriorityImageView priorityImageView : initialEntities)
             squares.getChildren().add(priorityImageView.getImageView());
 
+        Label mainGoals = new Label(dungeon.getGoal().toString());
+        mainGoals.setFont(Font.font("Verdana", FontWeight.NORMAL, 15));
+        goals.getChildren().add(mainGoals);
     }
 
     @FXML
-    public void handleKeyPress(KeyEvent event) {
+    public void handleKeyPress(KeyEvent event) throws IOException {
         switch (event.getCode()) {
         case UP:
             player.moveUp();
@@ -69,11 +90,15 @@ public class DungeonController {
             player.moveRight();
             break;
         case F:
-            player.useItem(ItemCategory.SWORD);
-        case G:
-            player.useItem(ItemCategory.KEY);
+            player.useItem(player.getCurrItem());
+            break;
         case SPACE:
             player.pickUp();
+            break;
+        case B:
+            sceneSelector.openInventory(player);
+            dungeon.stopAllTimelines();
+            break;
         default:
             break;
         }

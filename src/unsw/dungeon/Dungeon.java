@@ -56,6 +56,10 @@ public class Dungeon implements Observer {
         this.goal = goal;
     }
 
+    public Goal getGoal() {
+        return goal;
+    }
+
     private String constructKey(int x, int y) {
         return x + " " + y;
     }
@@ -103,22 +107,38 @@ public class Dungeon implements Observer {
     private Map<Class, List<Entity>> classifyEntities() {
         Map<Class, List<Entity>> groups = new HashMap<>();
 
-        for (int i = 0; i < getHeight(); i++) {
-            for (int j = 0; j < getWidth(); j++) {
-                for (Entity entity : getEntities(j, i)) {
-                    if (entity instanceof Observer) {
-                        groups.putIfAbsent(Observer.class, new ArrayList<>());
-                        groups.get(Observer.class).add(entity);
-                    }
-                    if (entity instanceof Observable) {
-                        groups.putIfAbsent(Observable.class, new ArrayList<>());
-                        groups.get(Observable.class).add(entity);
-                    }
+        for (String key : entities.keySet()) {
+            for (Entity entity : entities.get(key)) {
+                if (entity instanceof Observer) {
+                    groups.putIfAbsent(Observer.class, new ArrayList<>());
+                    groups.get(Observer.class).add(entity);
+                }
+                if (entity instanceof Observable) {
+                    groups.putIfAbsent(Observable.class, new ArrayList<>());
+                    groups.get(Observable.class).add(entity);
                 }
             }
         }
 
         return groups;
+    }
+
+    public void startAllTimelines() {
+        for (String key : entities.keySet()) {
+            for (Entity entity : entities.get(key)) {
+                if (entity instanceof TimeDependent)
+                    ((TimeDependent) entity).start();
+            }
+        }
+    }
+
+    public void stopAllTimelines() {
+        for (String key : entities.keySet()) {
+            for (Entity entity : entities.get(key)) {
+                if (entity instanceof TimeDependent)
+                    ((TimeDependent) entity).stop();
+            }
+        }
     }
 
     @Override

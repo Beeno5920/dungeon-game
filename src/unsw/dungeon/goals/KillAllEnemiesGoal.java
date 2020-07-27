@@ -47,4 +47,13 @@ public class KillAllEnemiesGoal implements Goal {
     public void removeSubGoal(Goal goal) {
         subGoals.remove(goal);
     }
+
+    @Override
+    public List<Goal> getGoals() {
+        return subGoals;
+    }
+
+    public String toString() {
+        return "Kill all enemies\n";
+    }
 }

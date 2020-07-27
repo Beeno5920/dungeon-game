@@ -47,4 +47,13 @@ public class BouldersGoal implements Goal {
     public void removeSubGoal(Goal goal) {
         subGoals.remove(goal);
     }
+
+    @Override
+    public List<Goal> getGoals() {
+        return subGoals;
+    }
+
+    public String toString() {
+        return "Place boulders on all the floor switches\n";
+    }
 }
