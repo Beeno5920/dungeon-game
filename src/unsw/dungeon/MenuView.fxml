@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+
+<?import javafx.scene.text.Font?>
+<BorderPane onKeyPressed="#handleKeyPress" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <left>
+        <VBox style="-fx-font-size: 15pt;" prefHeight="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label style="-fx-font-weight: bold; -fx-font-size: 25pt;" prefHeight="46.0" text="Instructions" textAlignment="CENTER" />
+                <Label prefHeight="26.0" text="Movement:" />
+                <Label prefHeight="17.0" text="  Arrow Keys" textFill="#7c7c7c" />
+                <Label prefHeight="26.0" text="Pick up item:" />
+                <Label prefHeight="17.0" text="  Space" textFill="#7c7c7c" />
+                <Label prefHeight="26.0" text="Open inventory:" />
+                <Label prefHeight="17.0" text="  G" textFill="#7c7c7c" />
+                <Label />
+                <Label style="-fx-font-weight: bold; -fx-font-size: 25pt;" prefHeight="46.0" text= "Goals" textAlignment="CENTER" />
+                <GridPane fx:id="goalsPane" prefHeight="200.0" BorderPane.alignment="CENTER">
+                    <children>
+
+                    </children>
+                </GridPane>
+            </children>
+        </VBox>
+    </left>
+    <center>
+        <VBox fx:id="menu" spacing="10" alignment="CENTER" BorderPane.alignment="CENTER">
+            <children>
+
+            </children>
+        </VBox>
+    </center>
+</BorderPane>

@@ -11,20 +11,27 @@
 
 <BorderPane onKeyPressed="#handleKeyPress" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="800" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <left>
-       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+       <VBox style="-fx-font-size: 15pt; -fx-background-color: saddlebrown" prefHeight="200.0" BorderPane.alignment="CENTER">
            <children>
-               <Label prefHeight="46.0" prefWidth="100.0" text="Instructions" textAlignment="CENTER" />
-               <Label prefHeight="26.0" prefWidth="100.0" text="Movement:" />
-               <Label prefHeight="17.0" prefWidth="120.0" text="  Arrow Keys" textFill="#7c7c7c" />
-               <Label prefHeight="26.0" prefWidth="100.0" text="Item pick up:" />
-               <Label prefHeight="17.0" prefWidth="120.0" text="  Space" textFill="#7c7c7c" />
-               <Label prefHeight="26.0" prefWidth="100.0" text="Open inventory:" />
-               <Label prefHeight="17.0" prefWidth="120.0" text="  B" textFill="#7c7c7c" />
+               <Label style="-fx-font-weight: bold; -fx-font-size: 25pt;" prefHeight="46.0" text="Instructions" textAlignment="CENTER" />
+               <Label prefHeight="26.0" text="Movement:" />
+               <Label prefHeight="17.0" text="  Arrow Keys" textFill="#7c7c7c" />
+               <Label prefHeight="26.0" text="Pick up item:" />
+               <Label prefHeight="17.0" text="  Space" textFill="#7c7c7c" />
+               <Label prefHeight="26.0" text="Open inventory:" />
+               <Label prefHeight="17.0" text="  G" textFill="#7c7c7c" />
+               <Label />
+               <Label style="-fx-font-weight: bold; -fx-font-size: 25pt;" prefHeight="46.0" text= "Goals" textAlignment="CENTER" />
            </children>
+           <GridPane fx:id="goalsPane" prefHeight="200.0" BorderPane.alignment="CENTER" hgap="5">
+               <children>
+
+               </children>
+           </GridPane>
        </VBox>
    </left>
    <center>
-     <GridPane fx:id="inventory" BorderPane.alignment="CENTER" hgap="10" vgap="10">
+     <GridPane fx:id="inventory" style="-fx-background-color: dimgray" BorderPane.alignment="CENTER" hgap="3" vgap="3">
          <columnConstraints>
              <ColumnConstraints />
          </columnConstraints>

@@ -63,8 +63,10 @@ public class Enemy extends Character implements Observer, Observable, TimeDepend
 
         int x = getX(), y = getY();
         if (getDungeon().getPlayer().getCharacterStatus().equals(CharacterStatus.INVINCIBLE)
-                && isSamePosition(playerPosition))
+                && isSamePosition(playerPosition)) {
             die();
+            return;
+        }
 
         PathFinder.Node next = path.remove(0);
         if (!canMoveTo(next.x, next.y)) {

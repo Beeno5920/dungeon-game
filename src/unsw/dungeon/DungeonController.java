@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,6 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.util.Pair;
 import unsw.dungeon.characters.Player;
 import unsw.dungeon.enums.ItemCategory;
 
@@ -30,7 +32,7 @@ public class DungeonController {
     private GridPane squares;
 
     @FXML
-    private VBox goals;
+    private GridPane goalsPane;
 
     private List<PriorityImageView> initialEntities;
 
@@ -48,6 +50,7 @@ public class DungeonController {
 
     public void setSceneSelector(SceneSelector sceneSelector) {
         this.sceneSelector = sceneSelector;
+        this.dungeon.setSceneSelector(sceneSelector);
     }
 
     public Player getPlayer() {
@@ -69,9 +72,13 @@ public class DungeonController {
         for (PriorityImageView priorityImageView : initialEntities)
             squares.getChildren().add(priorityImageView.getImageView());
 
-        Label mainGoals = new Label(dungeon.getGoal().toString());
-        mainGoals.setFont(Font.font("Verdana", FontWeight.NORMAL, 15));
-        goals.getChildren().add(mainGoals);
+        Pair<String, List<CheckBox>> goalComponents = dungeon.getGoal().constructDisplayComponent();
+        String[] goalTexts = goalComponents.getKey().split("\n");
+        List<CheckBox> goalStatus = goalComponents.getValue();
+        for (int i = 0; i < goalTexts.length; i++) {
+            goalsPane.add(new Label(goalTexts[i]), 0, i);
+            goalsPane.add(goalStatus.get(i), 1, i);
+        }
     }
 
     @FXML
@@ -95,9 +102,9 @@ public class DungeonController {
         case SPACE:
             player.pickUp();
             break;
-        case B:
-            sceneSelector.openInventory(player);
+        case G:
             dungeon.stopAllTimelines();
+            sceneSelector.openInventory(player);
             break;
         default:
             break;

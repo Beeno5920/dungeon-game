@@ -1,5 +1,7 @@
 package unsw.dungeon.goals;
 
+import javafx.beans.property.BooleanProperty;
+
 import java.util.List;
 
 public interface Goal {
@@ -12,4 +14,6 @@ public interface Goal {
     public void removeSubGoal(Goal goal);
 
     public List<Goal> getGoals();
+
+    public BooleanProperty getAchievedProperty();
 }

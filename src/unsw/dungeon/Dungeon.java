@@ -5,7 +5,9 @@ package unsw.dungeon;
 
 import unsw.dungeon.characters.Player;
 import unsw.dungeon.goals.Goal;
+import unsw.dungeon.goals.MainGoal;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +28,7 @@ public class Dungeon implements Observer {
     private Map<String, List<Entity>> entities;
     private Player player;
     private Goal goal;
+    private SceneSelector sceneSelector = null;
 
     public Dungeon(int width, int height) {
         this.width = width;
@@ -54,10 +57,15 @@ public class Dungeon implements Observer {
 
     public void setGoal(Goal goal) {
         this.goal = goal;
+        try {
+            isFinished();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public Goal getGoal() {
-        return goal;
+    public MainGoal getGoal() {
+        return (MainGoal) goal;
     }
 
     private String constructKey(int x, int y) {
@@ -141,10 +149,24 @@ public class Dungeon implements Observer {
         }
     }
 
+    public boolean isFinished() throws IOException {
+        if (goal.checkSelf()) {
+            sceneSelector.loadNextLevel();
+            return true;
+        }
+        return false;
+    }
+
+    public void setSceneSelector(SceneSelector sceneSelector) {
+        this.sceneSelector = sceneSelector;
+    }
+
     @Override
     public void update(Entity entity) {
-        if (goal != null && goal.checkSelf()) {
-            System.out.println("Congratulation! You passed this level!");
+        try {
+            isFinished();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

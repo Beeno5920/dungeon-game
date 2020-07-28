@@ -1,5 +1,10 @@
 package unsw.dungeon.goals;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
+import javafx.scene.layout.GridPane;
+import javafx.util.Pair;
 import unsw.dungeon.Dungeon;
 
 import java.util.*;
@@ -13,18 +18,25 @@ public class MainGoal implements Goal {
         this.goals = new ArrayList<>();
     }
 
-    @Override
-    public String toString() {
+    public Pair<String, List<CheckBox>> constructDisplayComponent() {
         StringBuilder sb = new StringBuilder();
         int indentation = 0;
         Stack<Goal> stack = new Stack<>();
         Stack<Integer> sizes = new Stack<>();
+        List<CheckBox> checkBoxes = new ArrayList<>();
 
         for (Goal goal : goals)
             stack.push(goal);
 
+
         while (!stack.isEmpty()) {
             Goal curr = stack.pop();
+
+            CheckBox checkBox = new CheckBox();
+            checkBox.setDisable(true);
+            checkBox.selectedProperty().bindBidirectional(curr.getAchievedProperty());
+            checkBoxes.add(checkBox);
+
             sb.append("  ".repeat(Math.max(0, indentation)));
             if (!sizes.isEmpty()) {
                 sizes.push(sizes.pop() - 1);
@@ -49,7 +61,7 @@ public class MainGoal implements Goal {
                 stack.push(goal);
         }
 
-        return sb.toString();
+        return new Pair<>(sb.toString(), checkBoxes);
     }
 
     @Override
@@ -59,11 +71,13 @@ public class MainGoal implements Goal {
 
     @Override
     public boolean checkSubGoals() {
+        boolean result = true;
         for (Goal goal : goals) {
-            if (!goal.checkSelf() || !goal.checkSubGoals())
-                return false;
+            boolean self = goal.checkSelf(), subGoals = goal.checkSubGoals();
+            if (!self || !subGoals)
+                result = false;
         }
-        return true;
+        return result;
     }
 
     @Override
@@ -79,5 +93,10 @@ public class MainGoal implements Goal {
     @Override
     public List<Goal> getGoals() {
         return goals;
+    }
+
+    @Override
+    public BooleanProperty getAchievedProperty() {
+        return null;
     }
 }

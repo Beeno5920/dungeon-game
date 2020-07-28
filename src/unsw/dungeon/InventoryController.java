@@ -3,22 +3,31 @@ package unsw.dungeon;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 import unsw.dungeon.characters.Player;
 import unsw.dungeon.items.Item;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 public class InventoryController {
     @FXML
     private GridPane inventory;
+
+    @FXML
+    private GridPane goalsPane;
 
     private Player player;
 
@@ -93,6 +102,14 @@ public class InventoryController {
             items[y][x] = initialEntities.get(i).getKey();
         }
         inventory.add(cursor, 0, 0);
+
+        Pair<String, List<CheckBox>> goalComponents = player.getDungeon().getGoal().constructDisplayComponent();
+        String[] goalTexts = goalComponents.getKey().split("\n");
+        List<CheckBox> goalStatus = goalComponents.getValue();
+        for (int i = 0; i < goalTexts.length; i++) {
+            goalsPane.add(new Label(goalTexts[i]), 0, i);
+            goalsPane.add(goalStatus.get(i), 1, i);
+        }
     }
 
     @FXML
@@ -112,7 +129,7 @@ public class InventoryController {
                 break;
             case SPACE:
                 selectItem();
-            case B:
+            case G:
                 sceneSelector.setScene("dungeonScene");
                 player.getDungeon().startAllTimelines();
                 break;

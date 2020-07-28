@@ -1,13 +1,22 @@
 package unsw.dungeon.goals;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class AndGoal implements Goal {
     private List<Goal> subGoals;
+    private BooleanProperty achieved;
 
     public AndGoal() {
         this.subGoals = new ArrayList<>();
+        this.achieved = new SimpleBooleanProperty(false);
+    }
+
+    public BooleanProperty getAchievedProperty() {
+        return achieved;
     }
 
     @Override
@@ -17,11 +26,14 @@ public class AndGoal implements Goal {
 
     @Override
     public boolean checkSubGoals() {
+        boolean result = true;
         for (Goal goal : subGoals) {
-            if (!goal.checkSelf() || !goal.checkSubGoals())
-                return false;
+            boolean self = goal.checkSelf(), subGoals = goal.checkSubGoals(); // in order to update all the boolean properties of subgoals
+            if (!self || !subGoals)
+                result = false;
         }
-        return true;
+        achieved.set(result);
+        return result;
     }
 
     @Override
