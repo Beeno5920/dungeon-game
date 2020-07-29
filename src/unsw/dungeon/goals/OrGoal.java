@@ -1,13 +1,22 @@
 package unsw.dungeon.goals;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrGoal implements Goal {
     private List<Goal> subGoals;
+    private BooleanProperty achieved;
 
     public OrGoal() {
         this.subGoals = new ArrayList<>();
+        this.achieved = new SimpleBooleanProperty(false);
+    }
+
+    public BooleanProperty getAchievedProperty() {
+        return achieved;
     }
 
     @Override
@@ -17,13 +26,14 @@ public class OrGoal implements Goal {
 
     @Override
     public boolean checkSubGoals() {
-        if (subGoals.isEmpty())
-            return true;
+        boolean result = false;
         for (Goal goal : subGoals) {
-            if (goal.checkSelf() && goal.checkSubGoals())
-                return true;
+            boolean self = goal.checkSelf(), subGoals = goal.checkSubGoals();   // in order to update all the boolean properties of subgoals
+            if (self && subGoals)
+                result = true;
         }
-        return false;
+        achieved.set(result);
+        return result;
     }
 
     @Override
@@ -34,5 +44,10 @@ public class OrGoal implements Goal {
     @Override
     public void removeSubGoal(Goal goal) {
         subGoals.remove(goal);
+    }
+
+    @Override
+    public List<Goal> getGoals() {
+        return subGoals;
     }
 }

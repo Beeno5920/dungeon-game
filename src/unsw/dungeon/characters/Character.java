@@ -39,8 +39,6 @@ public abstract class Character extends Entity {
         return canMove;
     }
 
-    public abstract void notifyAllObservers();
-
     public void moveUp() {
         orientation = Orientation.UP;
         int y = getY();
@@ -81,6 +79,10 @@ public abstract class Character extends Entity {
         notifyAllObservers();
     }
 
+    public void notifyAllObservers() {
+
+    }
+
     /**
      * Get the position which is one square away from the orientation.
      * @return  The facing position in the form of a size 2 integer array,
@@ -113,7 +115,10 @@ public abstract class Character extends Entity {
 
     public void setCharacterStatus(CharacterStatus characterStatus) {
         this.characterStatus = characterStatus;
-        System.out.println("You are " + characterStatus);
+        System.out.println(this + " is " + characterStatus);
+
+        if (this instanceof Player && characterStatus.equals(CharacterStatus.DEAD))
+            getDungeon().gameOver();
     }
 
     public boolean characterStatusEquals(CharacterStatus characterStatus) {

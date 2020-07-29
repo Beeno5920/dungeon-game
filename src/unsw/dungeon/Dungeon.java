@@ -5,7 +5,9 @@ package unsw.dungeon;
 
 import unsw.dungeon.characters.Player;
 import unsw.dungeon.goals.Goal;
+import unsw.dungeon.goals.MainGoal;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +28,7 @@ public class Dungeon implements Observer {
     private Map<String, List<Entity>> entities;
     private Player player;
     private Goal goal;
+    private SceneSelector sceneSelector = null;
 
     public Dungeon(int width, int height) {
         this.width = width;
@@ -54,6 +57,15 @@ public class Dungeon implements Observer {
 
     public void setGoal(Goal goal) {
         this.goal = goal;
+        try {
+            isFinished();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public MainGoal getGoal() {
+        return (MainGoal) goal;
     }
 
     private String constructKey(int x, int y) {
@@ -103,17 +115,15 @@ public class Dungeon implements Observer {
     private Map<Class, List<Entity>> classifyEntities() {
         Map<Class, List<Entity>> groups = new HashMap<>();
 
-        for (int i = 0; i < getHeight(); i++) {
-            for (int j = 0; j < getWidth(); j++) {
-                for (Entity entity : getEntities(j, i)) {
-                    if (entity instanceof Observer) {
-                        groups.putIfAbsent(Observer.class, new ArrayList<>());
-                        groups.get(Observer.class).add(entity);
-                    }
-                    if (entity instanceof Observable) {
-                        groups.putIfAbsent(Observable.class, new ArrayList<>());
-                        groups.get(Observable.class).add(entity);
-                    }
+        for (String key : entities.keySet()) {
+            for (Entity entity : entities.get(key)) {
+                if (entity instanceof Observer) {
+                    groups.putIfAbsent(Observer.class, new ArrayList<>());
+                    groups.get(Observer.class).add(entity);
+                }
+                if (entity instanceof Observable) {
+                    groups.putIfAbsent(Observable.class, new ArrayList<>());
+                    groups.get(Observable.class).add(entity);
                 }
             }
         }
@@ -121,10 +131,47 @@ public class Dungeon implements Observer {
         return groups;
     }
 
+    public void startAllTimelines() {
+        for (String key : entities.keySet()) {
+            for (Entity entity : entities.get(key)) {
+                if (entity instanceof TimeDependent)
+                    ((TimeDependent) entity).start();
+            }
+        }
+    }
+
+    public void stopAllTimelines() {
+        for (String key : entities.keySet()) {
+            for (Entity entity : entities.get(key)) {
+                if (entity instanceof TimeDependent)
+                    ((TimeDependent) entity).stop();
+            }
+        }
+    }
+
+    public boolean isFinished() throws IOException {
+        if (goal.checkSelf()) {
+            sceneSelector.loadNextLevel();
+            return true;
+        }
+        return false;
+    }
+
+    public void gameOver() {
+        stopAllTimelines();
+        sceneSelector.gameOver();
+    }
+
+    public void setSceneSelector(SceneSelector sceneSelector) {
+        this.sceneSelector = sceneSelector;
+    }
+
     @Override
     public void update(Entity entity) {
-        if (goal != null && goal.checkSelf()) {
-            System.out.println("Congratulation! You passed this level!");
+        try {
+            isFinished();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
