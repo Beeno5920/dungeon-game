@@ -432,7 +432,9 @@ Chi Chung:
 
 ### Week-08
 
-Fill in here.
+Chi Chung:
+1.  Completed the backend
+2.  Fixed all the bugs discovered
 
 ### Week-09
 
