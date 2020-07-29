@@ -235,7 +235,7 @@ public class DungeonController {
         case E:
             if (isMenuOpened || isGameOver) {
                 sceneSelector.loadStartingScene();
-                sceneSelector.setCurrLevelIdx(0);
+                sceneSelector.setCurrLevelIdx(-1);
                 closeMenu();
             }
         default:
