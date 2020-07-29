@@ -116,6 +116,9 @@ public abstract class Character extends Entity {
     public void setCharacterStatus(CharacterStatus characterStatus) {
         this.characterStatus = characterStatus;
         System.out.println(this + " is " + characterStatus);
+
+        if (this instanceof Player && characterStatus.equals(CharacterStatus.DEAD))
+            getDungeon().gameOver();
     }
 
     public boolean characterStatusEquals(CharacterStatus characterStatus) {

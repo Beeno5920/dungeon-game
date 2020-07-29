@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import java.io.File;
 
 public class EntityImages {
+    public final Image groundImage;
     public final Image playerImage;
     public final Image wallImage;
     public final Image exitImage;
@@ -20,6 +21,7 @@ public class EntityImages {
     public final Image invincibilityPotionImage;
 
     public EntityImages() {
+        groundImage = new Image((new File("images/dirt_0_new.png")).toURI().toString());
         playerImage = new Image((new File("images/human_new.png")).toURI().toString());
         wallImage = new Image((new File("images/brick_brown_0.png")).toURI().toString());
         exitImage = new Image((new File("images/exit.png").toURI().toString()));

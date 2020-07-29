@@ -45,7 +45,7 @@ public class InventoryController {
         this.initialEntities = initialEntities;
         this.cursorPosition = new int[] {0, 0};
         this.items = new Item[10][10];
-        this.cursor = new Rectangle(40, 40);
+        this.cursor = new Rectangle(30, 30);
         cursor.setStroke(Color.BLUE);
         cursor.setFill(Color.TRANSPARENT);
     }
@@ -94,6 +94,15 @@ public class InventoryController {
 
     @FXML
     public void initialize() {
+        Image ground = new Image((new File("images/dirt_0_new.png")).toURI().toString());
+
+        // Add the ground first so it is below all other entities
+        for (int x = 0; x < player.getDungeon().getWidth(); x++) {
+            for (int y = 0; y < player.getDungeon().getHeight(); y++) {
+                inventory.add(new ImageView(ground), x, y);
+            }
+        }
+
         int x = 0, y = 0;
         for (int i = 0; i < initialEntities.size(); i++) {
             x = i / 10;
@@ -130,7 +139,7 @@ public class InventoryController {
             case SPACE:
                 selectItem();
             case G:
-                sceneSelector.setScene("dungeonScene");
+                sceneSelector.setScene("dungeon");
                 player.getDungeon().startAllTimelines();
                 break;
             default:

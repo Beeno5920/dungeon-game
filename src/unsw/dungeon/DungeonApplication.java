@@ -3,6 +3,7 @@ package unsw.dungeon;
 import java.io.IOException;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,8 +16,14 @@ public class DungeonApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         primaryStage.setTitle("Dungeon");
+
+        primaryStage.setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
+        });
+
         sceneSelector = new SceneSelector(primaryStage);
-        sceneSelector.loadNextLevel();
+        sceneSelector.loadStartingScene();
         primaryStage.show();
     }
 

@@ -17,6 +17,7 @@ public class SceneSelector {
     private Map<String, Scene> sceneMap;
     private File[] levels;
     private int currLevelIdx;
+    private DungeonController dungeonController;
 
     public SceneSelector(Stage stage) {
         this.stage = stage;
@@ -49,15 +50,12 @@ public class SceneSelector {
         return scene;
     }
 
-    public void reloadCurrLevel() throws IOException {
-        loadDungeonScene();
-    }
+    public void loadStartingScene() throws IOException {
+        StartingViewController controller = new StartingViewController(this);
+        Scene startingScene = loadFxml("StartingView.fxml", controller);
+        putScene("start", startingScene);
 
-    public void loadNextLevel() throws IOException {
-        if (currLevelIdx + 1 >= levels.length)
-            return;
-        currLevelIdx++;
-        loadDungeonScene();
+        stage.setScene(startingScene);
     }
 
     private void loadDungeonScene() throws IOException {
@@ -65,11 +63,25 @@ public class SceneSelector {
 
         DungeonController controller = dungeonLoader.loadController();
         controller.setSceneSelector(this);
+        dungeonController = controller;
 
         Scene dungeonScene = loadFxml("DungeonView.fxml", controller);
-        putScene("dungeonScene", dungeonScene);
+        putScene("dungeon", dungeonScene);
 
         stage.setScene(dungeonScene);
+    }
+
+    public void reloadCurrLevel() throws IOException {
+        loadDungeonScene();
+    }
+
+    public void loadNextLevel() throws IOException {
+        if (currLevelIdx + 1 >= levels.length) {
+            dungeonController.win();
+            return;
+        }
+        currLevelIdx++;
+        loadDungeonScene();
     }
 
     private void loadInventoryScene(Player player) throws IOException {
@@ -78,11 +90,23 @@ public class SceneSelector {
         controller.setSceneSelector(this);
 
         Scene inventoryScene = loadFxml("InventoryView.fxml", controller);
-        putScene("inventoryScene", inventoryScene);
+        putScene("inventory", inventoryScene);
     }
 
     public void openInventory(Player player) throws IOException {
         loadInventoryScene(player);
-        setScene("inventoryScene");
+        setScene("inventory");
+    }
+
+    public void gameOver() {
+        dungeonController.gameOver();
+    }
+
+    public void setCurrLevelIdx(int currLevelIdx) {
+        this.currLevelIdx = currLevelIdx;
+    }
+
+    public void close() {
+        stage.close();
     }
 }

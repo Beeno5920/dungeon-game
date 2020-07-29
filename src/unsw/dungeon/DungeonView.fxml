@@ -9,6 +9,7 @@
 
 
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.StackPane?>
 <BorderPane onKeyPressed="#handleKeyPress" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <left>
       <VBox style="-fx-font-size: 15pt; -fx-background-color: saddlebrown" prefHeight="200.0" BorderPane.alignment="CENTER">
@@ -20,6 +21,8 @@
             <Label prefHeight="17.0" text="  Space" textFill="#7c7c7c" />
             <Label prefHeight="26.0" text="Open inventory:" />
             <Label prefHeight="17.0" text="  G" textFill="#7c7c7c" />
+            <Label prefHeight="26.0" text="Open/Close menu:" />
+            <Label prefHeight="17.0" text="  P" textFill="#7c7c7c" />
             <Label />
             <Label style="-fx-font-weight: bold; -fx-font-size: 25pt;" prefHeight="46.0" text= "Goals" textAlignment="CENTER" />
             <GridPane fx:id="goalsPane" prefHeight="200.0" BorderPane.alignment="CENTER" hgap="5">
@@ -31,16 +34,18 @@
       </VBox>
    </left>
    <center>
-      <GridPane fx:id="squares" BorderPane.alignment="CENTER">
-         <columnConstraints>
-            <ColumnConstraints />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints />
-         </rowConstraints>
-         <children>
+      <StackPane fx:id="stack" BorderPane.alignment="CENTER">
+         <GridPane fx:id="squares">
+            <columnConstraints>
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+            </rowConstraints>
+            <children>
 
-         </children>
-      </GridPane>
+            </children>
+         </GridPane>
+      </StackPane>
    </center>
 </BorderPane>

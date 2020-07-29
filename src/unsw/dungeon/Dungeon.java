@@ -157,6 +157,11 @@ public class Dungeon implements Observer {
         return false;
     }
 
+    public void gameOver() {
+        stopAllTimelines();
+        sceneSelector.gameOver();
+    }
+
     public void setSceneSelector(SceneSelector sceneSelector) {
         this.sceneSelector = sceneSelector;
     }
