@@ -3,7 +3,6 @@ package unsw.dungeon;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
@@ -14,7 +13,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-import java.io.File;
 import java.io.IOException;
 
 public class StartingViewController {
@@ -28,12 +26,12 @@ public class StartingViewController {
 
     private final int height = 18;
 
-    private EntityImages images;
+    private Images images;
 
     private SceneSelector sceneSelector;
 
     public StartingViewController(SceneSelector sceneSelector) {
-        this.images = new EntityImages();
+        this.images = new Images();
         this.sceneSelector = sceneSelector;
     }
 

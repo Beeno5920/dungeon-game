@@ -15,12 +15,12 @@ import java.util.Map;
 
 public class InventoryControllerLoader {
     private Player player;
-    private EntityImages images;
+    private Images images;
     private List<Pair<Item, ImageView>> imageViews;
 
     public InventoryControllerLoader(Player player) {
         this.player = player;
-        this.images = new EntityImages();
+        this.images = new Images();
         this.imageViews = new ArrayList<>();
         extractItems();
     }

@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 
 import java.io.File;
 
-public class EntityImages {
+public class Images {
     public final Image groundImage;
     public final Image playerImage;
     public final Image wallImage;
@@ -19,8 +19,10 @@ public class EntityImages {
     public final Image enemyImage;
     public final Image swordImage;
     public final Image invincibilityPotionImage;
+    public final Image dragonImage;
+    public final Image ghostImage;
 
-    public EntityImages() {
+    public Images() {
         groundImage = new Image((new File("images/dirt_0_new.png")).toURI().toString());
         playerImage = new Image((new File("images/human_new.png")).toURI().toString());
         wallImage = new Image((new File("images/brick_brown_0.png")).toURI().toString());
@@ -35,5 +37,7 @@ public class EntityImages {
         enemyImage = new Image((new File("images/deep_elf_master_archer.png").toURI().toString()));
         swordImage = new Image((new File("images/greatsword_1_new.png").toURI().toString()));
         invincibilityPotionImage = new Image((new File("images/brilliant_blue_new.png").toURI().toString()));
+        dragonImage = new Image(new File("images/dragon.png").toURI().toString());
+        ghostImage = new Image(new File("images/ghost.png").toURI().toString());
     }
 }
