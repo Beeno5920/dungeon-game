@@ -20,11 +20,11 @@ public class Enemy extends Character implements Observer, Observable, TimeDepend
     private int[] playerPosition;
     private Set<Observer> observers;
 
-    private PathFinder pathFinder;
-    private List<PathFinder.Node> path;
+    protected PathFinder pathFinder;
+    protected List<PathFinder.Node> path;
 
-    private Timeline moveTimeline, searchTimeline;
-    private boolean isSearching;
+    protected Timeline moveTimeline, searchTimeline;
+    protected boolean isSearching;
 
     public Enemy(Dungeon dungeon, int x, int y) {
         super(dungeon, x, y);
@@ -33,6 +33,20 @@ public class Enemy extends Character implements Observer, Observable, TimeDepend
         this.observers = new HashSet<>();
         this.pathFinder = new PathFinder(new Astar(this, getPosition(), playerPosition));
         this.path = new ArrayList<>();
+        initializeTimelines();
+    }
+
+    public Enemy(Dungeon dungeon, int x, int y, int speed) {
+        super(dungeon, x, y);
+        this.speed = speed;
+        this.playerPosition = dungeon.getPlayer().getPosition();
+        this.observers = new HashSet<>();
+        this.pathFinder = new PathFinder(new Astar(this, getPosition(), playerPosition));
+        this.path = new ArrayList<>();
+        initializeTimelines();
+    }
+
+    protected void initializeTimelines() {
         this.moveTimeline = new Timeline();
         this.searchTimeline = new Timeline();
         this.isSearching = false;

@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import unsw.dungeon.characters.Enemy;
+import unsw.dungeon.characters.EnemyFactory;
 import unsw.dungeon.characters.Player;
 import unsw.dungeon.enums.LayerLevel;
 import unsw.dungeon.fieldobjects.*;
@@ -31,6 +32,7 @@ public abstract class DungeonLoader {
     private JSONObject json;
     private Map<Integer, KeyDoorPair> keyDoorPairMap;
     private Map<Integer, PortalPair> portalPairMap;
+    private EnemyFactory enemyFactory;
 
     public DungeonLoader(String filename) throws FileNotFoundException {
         json = new JSONObject(new JSONTokener(new FileReader("dungeons/" + filename)));
@@ -47,6 +49,7 @@ public abstract class DungeonLoader {
         int height = json.getInt("height");
 
         Dungeon dungeon = new Dungeon(width, height);
+        enemyFactory = new EnemyFactory(dungeon);
 
         JSONArray jsonEntities = json.getJSONArray("entities");
 
@@ -174,10 +177,16 @@ public abstract class DungeonLoader {
                 entity = portal;
                 break;
             case "enemy":
-                Enemy enemy = new Enemy(dungeon, x, y);
+                Enemy enemy = enemyFactory.createDeepElf(x, y);
                 enemy.setLayerLevel(LayerLevel.TOP);
                 onLoad(enemy);
                 entity = enemy;
+                break;
+            case "ghost":
+                Enemy ghost = enemyFactory.createGhost(x, y);
+                ghost.setLayerLevel(LayerLevel.TOP);
+                onLoad(ghost);
+                entity = ghost;
                 break;
             case "sword":
                 Sword sword = new Sword(x, y);

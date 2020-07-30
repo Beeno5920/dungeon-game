@@ -151,6 +151,8 @@ public class Dungeon implements Observer {
 
     public boolean isFinished() throws IOException {
         if (goal.checkSelf()) {
+            stopAllTimelines();
+            entities.clear();
             sceneSelector.loadNextLevel();
             return true;
         }

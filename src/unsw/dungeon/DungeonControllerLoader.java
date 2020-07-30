@@ -1,16 +1,12 @@
 package unsw.dungeon;
 
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import unsw.dungeon.characters.Enemy;
+import unsw.dungeon.characters.Ghost;
 import unsw.dungeon.characters.Player;
 import unsw.dungeon.fieldobjects.*;
 import unsw.dungeon.items.InvincibilityPotion;
@@ -18,7 +14,9 @@ import unsw.dungeon.items.Key;
 import unsw.dungeon.items.Sword;
 import unsw.dungeon.items.Treasure;
 
-import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A DungeonLoader that also creates the necessary ImageViews for the UI,
@@ -29,13 +27,13 @@ import java.io.File;
 public class DungeonControllerLoader extends DungeonLoader {
 
     private List<PriorityImageView> entities;
-    private EntityImages images;
+    private Images images;
 
     public DungeonControllerLoader(String filename)
             throws FileNotFoundException {
         super(filename);
         entities = new ArrayList<>();
-        images = new EntityImages();
+        images = new Images();
     }
 
     @Override
@@ -97,6 +95,8 @@ public class DungeonControllerLoader extends DungeonLoader {
     @Override
     public void onLoad(Enemy enemy) {
         ImageView view = new ImageView(images.enemyImage);
+        if (enemy instanceof Ghost)
+            view = new ImageView(images.ghostImage);
         addEntity(enemy, view);
     }
 

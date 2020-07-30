@@ -10,14 +10,20 @@ import unsw.dungeon.enums.ItemCategory;
 
 public class InvincibilityPotion extends Item implements TimeDependent {
     private Player player;
-    private Timeline timeline;
+    private final Timeline timeline, visualEffect;
 
     public InvincibilityPotion(int x, int y) {
         super(ItemCategory.POTION, x, y);
         this.player = null;
         this.timeline = new Timeline();
+        this.visualEffect = new Timeline();
 
         timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(5), e -> tick(5)));
+        visualEffect.getKeyFrames().add(new KeyFrame(Duration.seconds(0.1), e -> {
+            player.setVisibility(!player.isVisible());
+        }));
+        visualEffect.setCycleCount(50);
+        visualEffect.setOnFinished(e -> player.setVisibility(true));
     }
 
     public void tick(double seconds) {
@@ -34,6 +40,7 @@ public class InvincibilityPotion extends Item implements TimeDependent {
         player.setCharacterStatus(CharacterStatus.INVINCIBLE);
         player.notifyAllObservers();
         timeline.playFromStart();
+        visualEffect.playFromStart();
         System.out.println("You now are invincible!");
     }
 
