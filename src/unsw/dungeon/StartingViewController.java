@@ -22,9 +22,9 @@ public class StartingViewController {
     @FXML
     private GridPane squares;
 
-    private final int width = 25;
+    public final static int prefWidth = 25;
 
-    private final int height = 18;
+    public final static int prefHeight = 18;
 
     private Images images;
 
@@ -38,39 +38,31 @@ public class StartingViewController {
     @FXML
     public void initialize() {
 
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++)
+        for (int i = 0; i < prefHeight; i++) {
+            for (int j = 0; j < prefWidth; j++)
                 squares.add(new ImageView(images.groundImage), j, i);
         }
 
-        for (int i = 0; i < height; i++) {
+        for (int i = 0; i < prefHeight; i++) {
             squares.add(new ImageView(images.wallImage), 0, i);
-            squares.add(new ImageView(images.wallImage), width - 1, i);
+            squares.add(new ImageView(images.wallImage), prefWidth - 1, i);
         }
 
-        for (int i = 0; i < width; i++) {
+        for (int i = 0; i < prefWidth; i++) {
             squares.add(new ImageView(images.wallImage), i, 0);
-            squares.add(new ImageView(images.wallImage), i, height - 1);
+            squares.add(new ImageView(images.wallImage), i, prefHeight - 1);
         }
 
         VBox menu = new VBox();
         menu.setAlignment(Pos.CENTER);
         menu.setSpacing(10);
-        menu.setPrefWidth(300);
 
         Text title = new Text("The Dungeon Game");
         title.setFill(Color.WHITE);
         title.setFont(Font.font(null, FontWeight.BOLD, 70));
 
-        String buttonStyle = "-fx-text-fill: #006464;\n" +
-                "    -fx-background-color: #DFB951;\n" +
-                "    -fx-border-radius: 20;\n" +
-                "    -fx-background-radius: 20;\n" +
-                "    -fx-font-size: 24;\n" +
-                "    -fx-padding: 5;";
-
         Button startButton = new Button("Start (S)");
-        startButton.setStyle(buttonStyle);
+        startButton.setId("button");
         startButton.setOnMouseClicked(e -> {
             try {
                 sceneSelector.loadNextLevel();
@@ -80,7 +72,7 @@ public class StartingViewController {
         });
 
         Button exitButton = new Button("Exit (E)");
-        exitButton.setStyle(buttonStyle);
+        exitButton.setId("button");
 
         menu.getChildren().addAll(title, startButton, exitButton);
 

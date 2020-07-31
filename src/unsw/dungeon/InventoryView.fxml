@@ -11,13 +11,15 @@
 
 <BorderPane onKeyPressed="#handleKeyPress" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <left>
-       <VBox style="-fx-font-size: 15pt; -fx-background-color: saddlebrown" prefHeight="200.0" BorderPane.alignment="CENTER">
+       <VBox style="-fx-font-size: 15pt; -fx-background-color: saddlebrown" prefHeight="350.0" BorderPane.alignment="CENTER">
            <children>
                <Label style="-fx-font-weight: bold; -fx-font-size: 25pt;" prefHeight="46.0" text="Instructions" textAlignment="CENTER" />
                <Label prefHeight="26.0" text="Movement:" />
                <Label prefHeight="17.0" text="  Arrow Keys" textFill="#7c7c7c" />
                <Label prefHeight="26.0" text="Select item:" />
                <Label prefHeight="17.0" text="  Space" textFill="#7c7c7c" />
+               <Label prefHeight="26.0" text="Discard item:" />
+               <Label prefHeight="17.0" text="  B" textFill="#7c7c7c" />
                <Label prefHeight="26.0" text="Close inventory:" />
                <Label prefHeight="17.0" text="  G" textFill="#7c7c7c" />
                <Label />
@@ -31,7 +33,7 @@
        </VBox>
    </left>
    <center>
-     <GridPane fx:id="inventory" style="-fx-background-color: dimgray" BorderPane.alignment="CENTER" hgap="3" vgap="3">
+     <GridPane fx:id="inventory" style="-fx-background-color: dimgray" BorderPane.alignment="CENTER">
          <columnConstraints>
              <ColumnConstraints />
          </columnConstraints>

@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.StackPane?>
 <BorderPane onKeyPressed="#handleKeyPress" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <left>
-      <VBox style="-fx-font-size: 15pt; -fx-background-color: saddlebrown" prefHeight="200.0" BorderPane.alignment="CENTER">
+      <VBox style="-fx-font-size: 15pt; -fx-background-color: saddlebrown" prefHeight="350.0" BorderPane.alignment="CENTER">
          <children>
             <Label style="-fx-font-weight: bold; -fx-font-size: 25pt;" prefHeight="46.0" text="Instructions" textAlignment="CENTER" />
             <Label prefHeight="26.0" text="Movement:" />

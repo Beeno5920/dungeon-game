@@ -80,13 +80,6 @@ public class DungeonController {
     }
 
     private VBox constructMenu(Text title) {
-        String buttonStyle = "-fx-text-fill: #006464;\n" +
-                "    -fx-background-color: #DFB951;\n" +
-                "    -fx-border-radius: 20;\n" +
-                "    -fx-background-radius: 20;\n" +
-                "    -fx-font-size: 24;\n" +
-                "    -fx-padding: 5;";
-
         VBox menu = new VBox();
         menu.setAlignment(Pos.CENTER);
         menu.setSpacing(10);
@@ -95,14 +88,14 @@ public class DungeonController {
 
         if (!isGameOver) {
             Button continueButton = new Button("Continue (C)");
-            continueButton.setStyle(buttonStyle);
+            continueButton.setId("button");
             continueButton.setOnMouseClicked(e -> sceneSelector.setScene("dungeon"));
             continueButton.setPrefWidth(menu.getPrefWidth());
             menu.getChildren().add(continueButton);
         }
 
         Button restartButton = new Button("Restart (R)");
-        restartButton.setStyle(buttonStyle);
+        restartButton.setId("button");
         restartButton.setOnMouseClicked(e -> {
             try {
                 sceneSelector.reloadCurrLevel();
@@ -114,7 +107,7 @@ public class DungeonController {
         menu.getChildren().add(restartButton);
 
         Button exitButton = new Button("Exit (E)");
-        exitButton.setStyle(buttonStyle);
+        exitButton.setId("button");
         exitButton.setPrefWidth(menu.getPrefWidth());
         menu.getChildren().add(exitButton);
 
@@ -162,12 +155,13 @@ public class DungeonController {
 
     @FXML
     public void initialize() {
-        Image ground = new Image((new File("images/dirt_0_new.png")).toURI().toString());
+        Images images = new Images();
 
-        // Add the ground first so it is below all other entities
-        for (int x = 0; x < dungeon.getWidth(); x++) {
-            for (int y = 0; y < dungeon.getHeight(); y++) {
-                squares.add(new ImageView(ground), x, y);
+        int w = Math.max(dungeon.getWidth(), StartingViewController.prefWidth);
+        int h = Math.max(dungeon.getHeight(), StartingViewController.prefHeight);
+        for (int x = 0; x < w; x++) {
+            for (int y = 0; y < h; y++) {
+                squares.add(new ImageView(images.groundImage), x, y);
             }
         }
 

@@ -45,6 +45,7 @@ public class SceneSelector {
         loader.setController(controller);
         Parent root = loader.load();
         Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         root.requestFocus();
 
         return scene;

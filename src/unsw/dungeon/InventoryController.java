@@ -44,8 +44,10 @@ public class InventoryController {
         this.player = player;
         this.initialEntities = initialEntities;
         this.cursorPosition = new int[] {0, 0};
-        this.items = new Item[10][10];
+        this.items = new Item[StartingViewController.prefWidth][StartingViewController.prefHeight];
         this.cursor = new Rectangle(30, 30);
+        cursor.setArcWidth(10);
+        cursor.setArcHeight(10);
         cursor.setStroke(Color.BLUE);
         cursor.setFill(Color.TRANSPARENT);
     }
@@ -90,6 +92,28 @@ public class InventoryController {
         int x = cursorPosition[0], y = cursorPosition[1];
         System.out.println("You selected " + items[y][x]);
         player.setCurrItem(items[y][x]);
+        closeInventory();
+    }
+
+    private void discardItem() {
+        int x = cursorPosition[0], y = cursorPosition[1];
+        if (items[y][x] == null)
+            return;
+
+        System.out.println("You discarded " + items[y][x]);
+        player.discardItem(items[y][x]);
+        for (Pair<Item, ImageView> pair : initialEntities) {
+            if (items[y][x].equals(pair.getKey())) {
+                inventory.getChildren().remove(pair.getValue());
+                items[y][x] = null;
+                break;
+            }
+        }
+    }
+
+    private void closeInventory() {
+        sceneSelector.setScene("dungeon");
+        player.getDungeon().startAllTimelines();
     }
 
     @FXML
@@ -97,18 +121,22 @@ public class InventoryController {
         Image ground = new Image((new File("images/dirt_0_new.png")).toURI().toString());
 
         // Add the ground first so it is below all other entities
-        for (int x = 0; x < player.getDungeon().getWidth(); x++) {
-            for (int y = 0; y < player.getDungeon().getHeight(); y++) {
+        for (int x = 0; x < StartingViewController.prefWidth; x++) {
+            for (int y = 0; y < StartingViewController.prefHeight; y++) {
+                Rectangle border = new Rectangle(30, 30);
+                border.setStroke(Color.GRAY);
+                border.setFill(Color.TRANSPARENT);
                 inventory.add(new ImageView(ground), x, y);
+                inventory.add(border, x, y);
             }
         }
 
         int x = 0, y = 0;
         for (int i = 0; i < initialEntities.size(); i++) {
-            x = i / 10;
-            y = i % 10;
+            x = i / StartingViewController.prefWidth;
+            y = i % StartingViewController.prefWidth;
             inventory.add(initialEntities.get(i).getValue(), y, x);
-            items[y][x] = initialEntities.get(i).getKey();
+            items[x][y] = initialEntities.get(i).getKey();
         }
         inventory.add(cursor, 0, 0);
 
@@ -138,9 +166,12 @@ public class InventoryController {
                 break;
             case SPACE:
                 selectItem();
+                break;
+            case B:
+                discardItem();
+                break;
             case G:
-                sceneSelector.setScene("dungeon");
-                player.getDungeon().startAllTimelines();
+                closeInventory();
                 break;
             default:
                 break;
