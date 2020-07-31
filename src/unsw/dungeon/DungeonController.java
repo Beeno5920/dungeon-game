@@ -57,6 +57,8 @@ public class DungeonController {
 
     private boolean isGameOver;
 
+    private boolean isLevelsMenuOpened;
+
     public DungeonController(Dungeon dungeon, List<PriorityImageView> initialEntities) {
         this.dungeon = dungeon;
         this.player = dungeon.getPlayer();
@@ -64,6 +66,7 @@ public class DungeonController {
         this.sceneSelector = null;
         this.isMenuOpened = false;
         this.isGameOver = false;
+        this.isLevelsMenuOpened = false;
     }
 
     public void setSceneSelector(SceneSelector sceneSelector) {
@@ -76,7 +79,8 @@ public class DungeonController {
     }
 
     private void blur() {
-        squares.setEffect(new GaussianBlur(10));
+        for (Node node : stack.getChildren())
+            node.setEffect(new GaussianBlur(10));
     }
 
     private VBox constructMenu(Text title) {
@@ -88,9 +92,7 @@ public class DungeonController {
 
         if (!isGameOver) {
             Button continueButton = new Button("Continue (C)");
-            continueButton.setId("button");
             continueButton.setOnMouseClicked(e -> sceneSelector.setScene("dungeon"));
-            continueButton.setPrefWidth(menu.getPrefWidth());
             menu.getChildren().add(continueButton);
         }
 
@@ -98,17 +100,18 @@ public class DungeonController {
         restartButton.setId("button");
         restartButton.setOnMouseClicked(e -> {
             try {
-                sceneSelector.reloadCurrLevel();
+                sceneSelector.loadCurrentLevel();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
         });
-        restartButton.setPrefWidth(menu.getPrefWidth());
         menu.getChildren().add(restartButton);
 
+        Button levelsButton = new Button("Choose level (L)");
+        levelsButton.setOnAction(e -> displayLevelsMenu());
+        menu.getChildren().add(levelsButton);
+
         Button exitButton = new Button("Exit (E)");
-        exitButton.setId("button");
-        exitButton.setPrefWidth(menu.getPrefWidth());
         menu.getChildren().add(exitButton);
 
         return menu;
@@ -129,6 +132,46 @@ public class DungeonController {
         isMenuOpened = false;
         squares.setEffect(null);
         stack.getChildren().removeIf(node -> node instanceof VBox);
+    }
+
+    private void displayLevelsMenu() {
+        isMenuOpened = false;
+        isLevelsMenuOpened = true;
+        blur();
+        GridPane levelsMenu = new GridPane();
+        levelsMenu.setVgap(10);
+        levelsMenu.setHgap(10);
+        levelsMenu.setAlignment(Pos.CENTER);
+
+        int size = 3;
+        int i = 0;
+        for (File file : sceneSelector.getLevels()) {
+            if (i >= size * size)
+                break;
+            int x = i % size;
+            int y = i / size;
+            Button button = new Button(file.getName().split("\\.")[0]);
+            button.setMaxWidth(200);
+            int finalI = i;
+            button.setOnAction(e -> {
+                sceneSelector.setCurrLevelIdx(finalI);
+                try {
+                    sceneSelector.loadCurrentLevel();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            });
+            levelsMenu.add(button, x, y);
+            i++;
+        }
+        stack.getChildren().add(levelsMenu);
+    }
+
+    private void closeLevelsMenu() {
+        isMenuOpened = true;
+        isLevelsMenuOpened = false;
+        stack.getChildren().remove(stack.getChildren().size() - 1);
+        stack.getChildren().get(stack.getChildren().size() - 1).setEffect(null);
     }
 
     public void win() {
@@ -201,12 +244,16 @@ public class DungeonController {
             break;
         case G:
             if (!isGameOver && !isMenuOpened) {
+                if (isLevelsMenuOpened)
+                    return;
                 dungeon.stopAllTimelines();
                 sceneSelector.openInventory(player);
             }
             break;
         case P:
             if (!isMenuOpened && !isGameOver) {
+                if (isLevelsMenuOpened)
+                    return;
                 dungeon.stopAllTimelines();
                 openMenu();
             } else if (isMenuOpened) {
@@ -222,7 +269,7 @@ public class DungeonController {
             break;
         case R:
             if (isMenuOpened || isGameOver) {
-                sceneSelector.reloadCurrLevel();
+                sceneSelector.loadCurrentLevel();
                 closeMenu();
             }
             break;
@@ -231,6 +278,13 @@ public class DungeonController {
                 sceneSelector.loadStartingScene();
                 sceneSelector.setCurrLevelIdx(-1);
                 closeMenu();
+            }
+            break;
+        case L:
+            if (isLevelsMenuOpened) {
+                closeLevelsMenu();
+            } else if (isMenuOpened) {
+                displayLevelsMenu();
             }
         default:
             break;

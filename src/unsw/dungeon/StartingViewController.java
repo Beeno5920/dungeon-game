@@ -2,7 +2,9 @@ package unsw.dungeon;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
@@ -13,7 +15,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class StartingViewController {
     @FXML
@@ -21,6 +25,9 @@ public class StartingViewController {
 
     @FXML
     private GridPane squares;
+
+    @FXML
+    private VBox menu;
 
     public final static int prefWidth = 25;
 
@@ -33,6 +40,51 @@ public class StartingViewController {
     public StartingViewController(SceneSelector sceneSelector) {
         this.images = new Images();
         this.sceneSelector = sceneSelector;
+    }
+
+    private void blur() {
+        for (Node node : stack.getChildren())
+            node.setEffect(new GaussianBlur(10));
+    }
+
+    private void displayLevelsMenu() {
+        if (stack.getChildren().size() == 3) {
+            closeLevelsMenu();
+            return;
+        }
+        blur();
+        GridPane levelsMenu = new GridPane();
+        levelsMenu.setVgap(10);
+        levelsMenu.setHgap(10);
+        levelsMenu.setAlignment(Pos.CENTER);
+        int size = 3;
+        int i = 0;
+        for (File file : sceneSelector.getLevels()) {
+            if (i >= size * size)
+                break;
+            int x = i % size;
+            int y = i / size;
+            Button button = new Button(file.getName().split("\\.")[0]);
+            button.setMaxWidth(200);
+            int finalI = i;
+            button.setOnAction(e -> {
+                sceneSelector.setCurrLevelIdx(finalI);
+                try {
+                    sceneSelector.loadCurrentLevel();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            });
+            levelsMenu.add(button, x, y);
+            i++;
+        }
+        stack.getChildren().add(levelsMenu);
+    }
+
+    private void closeLevelsMenu() {
+        stack.getChildren().remove(stack.getChildren().size() - 1);
+        for (Node node : stack.getChildren())
+            node.setEffect(null);
     }
 
     @FXML
@@ -53,10 +105,6 @@ public class StartingViewController {
             squares.add(new ImageView(images.wallImage), i, prefHeight - 1);
         }
 
-        VBox menu = new VBox();
-        menu.setAlignment(Pos.CENTER);
-        menu.setSpacing(10);
-
         Text title = new Text("The Dungeon Game");
         title.setFill(Color.WHITE);
         title.setFont(Font.font(null, FontWeight.BOLD, 70));
@@ -71,21 +119,30 @@ public class StartingViewController {
             }
         });
 
+        Button levelButton = new Button("Choose level (L)");
+        levelButton.setId("button");
+        levelButton.setOnAction(e -> displayLevelsMenu());
+
         Button exitButton = new Button("Exit (E)");
         exitButton.setId("button");
 
-        menu.getChildren().addAll(title, startButton, exitButton);
-
-        stack.getChildren().add(menu);
+        menu.getChildren().addAll(title, startButton, levelButton, exitButton);
     }
 
+    @FXML
     public void handleKeyPress(KeyEvent event) throws IOException {
         switch (event.getCode()) {
             case S:
                 sceneSelector.loadNextLevel();
                 break;
+            case L:
+                displayLevelsMenu();
+                break;
             case E:
-                sceneSelector.close();
+                if (stack.getChildren().size() == 3)
+                    closeLevelsMenu();
+                else
+                    sceneSelector.close();
                 break;
             default:
                 break;

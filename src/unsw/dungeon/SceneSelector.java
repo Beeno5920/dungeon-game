@@ -9,6 +9,7 @@ import unsw.dungeon.characters.Player;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -72,7 +73,7 @@ public class SceneSelector {
         stage.setScene(dungeonScene);
     }
 
-    public void reloadCurrLevel() throws IOException {
+    public void loadCurrentLevel() throws IOException {
         loadDungeonScene();
     }
 
@@ -103,8 +104,20 @@ public class SceneSelector {
         dungeonController.gameOver();
     }
 
+    public File[] getLevels() {
+        return levels;
+    }
+
+    public int getCurrLevelIdx() {
+        return currLevelIdx;
+    }
+
     public void setCurrLevelIdx(int currLevelIdx) {
         this.currLevelIdx = currLevelIdx;
+    }
+
+    public void setCurrentLevelIdx(int i) {
+        currLevelIdx = i;
     }
 
     public void close() {
