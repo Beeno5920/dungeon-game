@@ -7,6 +7,7 @@ import unsw.dungeon.items.Item;
 import unsw.dungeon.Observable;
 import unsw.dungeon.Observer;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -91,7 +92,13 @@ public class Player extends Character implements Observable {
         return items.get(item.getItemCategory()).contains(item);
     }
 
+    public boolean hasItem(ItemCategory itemCategory) {
+        return items.containsKey(itemCategory) && !items.get(itemCategory).isEmpty();
+    }
+
     public void discardItem(Item item) {
+        if (!hasItem(item))
+            return;
         ItemCategory itemCategory = item.getItemCategory();
         if (!items.containsKey(itemCategory) || items.getOrDefault(itemCategory, new ArrayList<>()).size() == 0)
             return;
@@ -110,6 +117,10 @@ public class Player extends Character implements Observable {
 
     public Map<ItemCategory, List<Item>> getItems() {
         return items;
+    }
+
+    public List<Item> getItems(ItemCategory itemCategory) {
+        return items.getOrDefault(itemCategory, new ArrayList<>());
     }
 
     public void setCurrItem(Item currItem) {

@@ -13,10 +13,7 @@ import unsw.dungeon.characters.Player;
 import unsw.dungeon.enums.LayerLevel;
 import unsw.dungeon.fieldobjects.*;
 import unsw.dungeon.goals.*;
-import unsw.dungeon.items.InvincibilityPotion;
-import unsw.dungeon.items.Key;
-import unsw.dungeon.items.Sword;
-import unsw.dungeon.items.Treasure;
+import unsw.dungeon.items.*;
 
 /**
  * Loads a dungeon from a .json file.
@@ -122,7 +119,6 @@ public abstract class DungeonLoader {
                 onLoad(wall);
                 entity = wall;
                 break;
-        // TODO Handle other possible entities
             case "exit":
                 Exit exit = new Exit(x, y);
                 onLoad(exit);
@@ -200,6 +196,18 @@ public abstract class DungeonLoader {
                 onLoad(invincibilityPotion);
                 entity = invincibilityPotion;
                 break;
+            case "bow":
+                Bow bow = new Bow(x, y);
+                bow.setLayerLevel(LayerLevel.MIDDLE);
+                onLoad(bow);
+                entity = bow;
+                break;
+            case "arrow":
+                Arrow arrow = new Arrow(x, y);
+                arrow.setLayerLevel(LayerLevel.MIDDLE);
+                onLoad(arrow);
+                entity = arrow;
+                break;
         }
         dungeon.addEntity(x, y, entity);
     }
@@ -208,7 +216,6 @@ public abstract class DungeonLoader {
 
     public abstract void onLoad(Wall wall);
 
-    // TODO Create additional abstract methods for the other entities
     public abstract void onLoad(Exit exit);
 
     public abstract void onLoad(Treasure treasure);
@@ -228,6 +235,10 @@ public abstract class DungeonLoader {
     public abstract void onLoad(Sword sword);
 
     public abstract void onLoad(InvincibilityPotion invincibilityPotion);
+
+    public abstract void onLoad(Bow bow);
+
+    public abstract void onLoad(Arrow arrow);
 
     private class KeyDoorPair {
         private Key key;

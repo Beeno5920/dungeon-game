@@ -9,10 +9,7 @@ import unsw.dungeon.characters.Enemy;
 import unsw.dungeon.characters.Ghost;
 import unsw.dungeon.characters.Player;
 import unsw.dungeon.fieldobjects.*;
-import unsw.dungeon.items.InvincibilityPotion;
-import unsw.dungeon.items.Key;
-import unsw.dungeon.items.Sword;
-import unsw.dungeon.items.Treasure;
+import unsw.dungeon.items.*;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -110,6 +107,19 @@ public class DungeonControllerLoader extends DungeonLoader {
     public void onLoad(InvincibilityPotion invincibilityPotion) {
         ImageView view = new ImageView(images.invincibilityPotionImage);
         addEntity(invincibilityPotion, view);
+    }
+
+    @Override
+    public void onLoad(Bow bow) {
+        ImageView view = new ImageView(images.bowImage);
+        addEntity(bow, view);
+    }
+
+    @Override
+    public void onLoad(Arrow arrow) {
+        ImageView view = new ImageView(images.arrowLeftImage);
+        arrow.setImageView(view);
+        addEntity(arrow, view);
     }
 
     private void addEntity(Entity entity, ImageView view) {

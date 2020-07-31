@@ -21,6 +21,11 @@ public class Images {
     public final Image invincibilityPotionImage;
     public final Image dragonImage;
     public final Image ghostImage;
+    public final Image bowImage;
+    public final Image arrowUpImage;
+    public final Image arrowDownImage;
+    public final Image arrowLeftImage;
+    public final Image arrowRightImage;
 
     public Images() {
         groundImage = new Image((new File("images/dirt_0_new.png")).toURI().toString());
@@ -39,5 +44,10 @@ public class Images {
         invincibilityPotionImage = new Image((new File("images/brilliant_blue_new.png").toURI().toString()));
         dragonImage = new Image(new File("images/dragon.png").toURI().toString());
         ghostImage = new Image(new File("images/ghost.png").toURI().toString());
+        bowImage = new Image(new File("images/bow.png").toURI().toString());
+        arrowUpImage = new Image(new File("images/arrow_up.png").toURI().toString());
+        arrowDownImage = new Image(new File("images/arrow_down.png").toURI().toString());
+        arrowLeftImage = new Image(new File("images/arrow_left.png").toURI().toString());
+        arrowRightImage = new Image(new File("images/arrow_right.png").toURI().toString());
     }
 }
