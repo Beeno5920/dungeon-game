@@ -125,6 +125,7 @@ public class Player extends Character implements Observable {
     }
 
     public void setCurrItem(Item currItem) {
+        removeEffect(this.currItem);
         this.currItem = currItem;
         displayEffect(currItem);
     }

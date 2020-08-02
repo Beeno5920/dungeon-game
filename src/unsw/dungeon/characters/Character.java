@@ -117,7 +117,6 @@ public abstract class Character extends Entity {
         if (!effects.containsKey(item))
             return;
         dungeon.removeEffect(effects.get(item));
-        effects.remove(item);
     }
 
     public void removeEffect(ImageView effect) {
