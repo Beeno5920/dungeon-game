@@ -14,6 +14,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.util.Pair;
 import unsw.dungeon.characters.Player;
 import unsw.dungeon.items.Item;
@@ -135,6 +136,11 @@ public class InventoryController {
             y = i % StartingViewController.prefWidth;
             inventory.add(initialEntities.get(i).getValue(), y, x);
             items[x][y] = initialEntities.get(i).getKey();
+            if (items[x][y] instanceof Consumable) {
+                Text durability = new Text(Integer.toString(((Consumable) items[x][y]).getAvailability()));
+                durability.setFill(Color.WHITE);
+                inventory.add(durability, y, x);
+            }
         }
         inventory.add(cursor, 0, 0);
 
