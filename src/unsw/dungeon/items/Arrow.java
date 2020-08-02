@@ -15,12 +15,10 @@ import unsw.dungeon.fieldobjects.FieldObject;
 
 
 public class Arrow extends Item {
-    private final Images images;
     private Timeline timeline;
 
     public Arrow(int x, int y) {
         super(ItemCategory.ARROW, x, y);
-        this.images = new Images();
     }
 
     public void shoot(Dungeon dungeon, Orientation orientation, int attackPower) {
@@ -66,16 +64,16 @@ public class Arrow extends Item {
     private void changeImage(Orientation orientation) {
         switch (orientation) {
             case UP:
-                getImageView().setImage(images.arrowUpImage);
+                getImageView().setImage(Images.arrowUpImage);
                 break;
             case DOWN:
-                getImageView().setImage(images.arrowDownImage);
+                getImageView().setImage(Images.arrowDownImage);
                 break;
             case LEFT:
-                getImageView().setImage(images.arrowLeftImage);
+                getImageView().setImage(Images.arrowLeftImage);
                 break;
             case RIGHT:
-                getImageView().setImage(images.arrowRightImage);
+                getImageView().setImage(Images.arrowRightImage);
                 break;
         }
     }
