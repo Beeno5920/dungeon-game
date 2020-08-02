@@ -102,6 +102,7 @@ public class Player extends Character implements Observable {
         ItemCategory itemCategory = item.getItemCategory();
         if (!items.containsKey(itemCategory) || items.getOrDefault(itemCategory, new ArrayList<>()).size() == 0)
             return;
+        removeEffect(item);
         items.get(itemCategory).remove(item);
     }
 
@@ -125,6 +126,7 @@ public class Player extends Character implements Observable {
 
     public void setCurrItem(Item currItem) {
         this.currItem = currItem;
+        displayEffect(currItem);
     }
 
     public Item getCurrItem() {

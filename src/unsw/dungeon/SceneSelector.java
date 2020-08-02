@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import unsw.dungeon.characters.Player;
 
+import javafx.scene.image.ImageView;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -102,6 +103,14 @@ public class SceneSelector {
 
     public void gameOver() {
         dungeonController.gameOver();
+    }
+
+    public void displayEffect(ImageView effect, int x, int y) {
+        dungeonController.displayEffect(effect, x, y);
+    }
+
+    public void removeEffect(ImageView effect) {
+        dungeonController.removeEffect(effect);
     }
 
     public File[] getLevels() {

@@ -118,15 +118,13 @@ public class InventoryController {
 
     @FXML
     public void initialize() {
-        Image ground = new Image((new File("images/dirt_0_new.png")).toURI().toString());
-
         // Add the ground first so it is below all other entities
         for (int x = 0; x < StartingViewController.prefWidth; x++) {
             for (int y = 0; y < StartingViewController.prefHeight; y++) {
                 Rectangle border = new Rectangle(30, 30);
                 border.setStroke(Color.GRAY);
                 border.setFill(Color.TRANSPARENT);
-                inventory.add(new ImageView(ground), x, y);
+                inventory.add(new ImageView(Images.groundImage), x, y);
                 inventory.add(border, x, y);
             }
         }

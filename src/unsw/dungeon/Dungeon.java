@@ -3,9 +3,12 @@
  */
 package unsw.dungeon;
 
+import javafx.scene.image.ImageView;
 import unsw.dungeon.characters.Player;
+import unsw.dungeon.enums.ItemCategory;
 import unsw.dungeon.goals.Goal;
 import unsw.dungeon.goals.MainGoal;
+import unsw.dungeon.items.Item;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -138,6 +141,13 @@ public class Dungeon implements Observer {
                     ((TimeDependent) entity).start();
             }
         }
+
+        for (ItemCategory itemCategory : player.getItems().keySet()) {
+            for (Item item : player.getItems(itemCategory)) {
+                if (item instanceof TimeDependent)
+                    ((TimeDependent) item).start();
+            }
+        }
     }
 
     public void stopAllTimelines() {
@@ -145,6 +155,13 @@ public class Dungeon implements Observer {
             for (Entity entity : entities.get(key)) {
                 if (entity instanceof TimeDependent)
                     ((TimeDependent) entity).stop();
+            }
+        }
+
+        for (ItemCategory itemCategory : player.getItems().keySet()) {
+            for (Item item : player.getItems(itemCategory)) {
+                if (item instanceof TimeDependent)
+                    ((TimeDependent) item).stop();
             }
         }
     }
@@ -166,6 +183,14 @@ public class Dungeon implements Observer {
 
     public void setSceneSelector(SceneSelector sceneSelector) {
         this.sceneSelector = sceneSelector;
+    }
+
+    public void displayEffect(ImageView effect, int x, int y) {
+        sceneSelector.displayEffect(effect, x, y);
+    }
+
+    public void removeEffect(ImageView effect) {
+        sceneSelector.removeEffect(effect);
     }
 
     @Override

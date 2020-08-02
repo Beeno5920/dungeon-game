@@ -33,12 +33,9 @@ public class StartingViewController {
 
     public final static int prefHeight = 18;
 
-    private Images images;
-
     private SceneSelector sceneSelector;
 
     public StartingViewController(SceneSelector sceneSelector) {
-        this.images = new Images();
         this.sceneSelector = sceneSelector;
     }
 
@@ -92,17 +89,17 @@ public class StartingViewController {
 
         for (int i = 0; i < prefHeight; i++) {
             for (int j = 0; j < prefWidth; j++)
-                squares.add(new ImageView(images.groundImage), j, i);
+                squares.add(new ImageView(Images.groundImage), j, i);
         }
 
         for (int i = 0; i < prefHeight; i++) {
-            squares.add(new ImageView(images.wallImage), 0, i);
-            squares.add(new ImageView(images.wallImage), prefWidth - 1, i);
+            squares.add(new ImageView(Images.wallImage), 0, i);
+            squares.add(new ImageView(Images.wallImage), prefWidth - 1, i);
         }
 
         for (int i = 0; i < prefWidth; i++) {
-            squares.add(new ImageView(images.wallImage), i, 0);
-            squares.add(new ImageView(images.wallImage), i, prefHeight - 1);
+            squares.add(new ImageView(Images.wallImage), i, 0);
+            squares.add(new ImageView(Images.wallImage), i, prefHeight - 1);
         }
 
         Text title = new Text("The Dungeon Game");

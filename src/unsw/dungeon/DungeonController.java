@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -174,6 +176,30 @@ public class DungeonController {
         stack.getChildren().get(stack.getChildren().size() - 1).setEffect(null);
     }
 
+    public void displayEffect(ImageView effect, int x, int y) {
+        GridPane.setColumnIndex(effect, player.getX());
+        GridPane.setRowIndex(effect, player.getY());
+        player.x().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable,
+                                Number oldValue, Number newValue) {
+                GridPane.setColumnIndex(effect, newValue.intValue());
+            }
+        });
+        player.y().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable,
+                                Number oldValue, Number newValue) {
+                GridPane.setRowIndex(effect, newValue.intValue());
+            }
+        });
+        squares.add(effect, x, y);
+    }
+
+    public void removeEffect(ImageView effect) {
+        squares.getChildren().remove(effect);
+    }
+
     public void win() {
         isGameOver = true;
         blur();
@@ -198,13 +224,11 @@ public class DungeonController {
 
     @FXML
     public void initialize() {
-        Images images = new Images();
-
         int w = Math.max(dungeon.getWidth(), StartingViewController.prefWidth);
         int h = Math.max(dungeon.getHeight(), StartingViewController.prefHeight);
         for (int x = 0; x < w; x++) {
             for (int y = 0; y < h; y++) {
-                squares.add(new ImageView(images.groundImage), x, y);
+                squares.add(new ImageView(Images.groundImage), x, y);
             }
         }
 

@@ -1,11 +1,18 @@
 package unsw.dungeon.items;
 
+import javafx.scene.image.ImageView;
+import unsw.dungeon.Images;
 import unsw.dungeon.characters.Player;
 import unsw.dungeon.enums.ItemCategory;
 
 public class Bow extends Item {
     public Bow(int x, int y) {
         super(ItemCategory.BOW, x, y);
+    }
+
+    @Override
+    public void onPick(Player player) {
+        player.attachEffect(this, new ImageView(Images.holdingBowImage));
     }
 
     @Override
