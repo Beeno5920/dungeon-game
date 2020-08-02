@@ -16,4 +16,8 @@ public class EnemyFactory {
     public Enemy createGhost(int x, int y) {
         return new Ghost(dungeon, x, y);
     }
+
+    public Enemy createDragon(int x, int y) {
+        return new Dragon(dungeon, x, y);
+    }
 }

@@ -184,6 +184,12 @@ public abstract class DungeonLoader {
                 onLoad(ghost);
                 entity = ghost;
                 break;
+            case "dragon":
+                Enemy dragon = enemyFactory.createDragon(x, y);
+                dragon.setLayerLevel(LayerLevel.TOP);
+                onLoad(dragon);
+                entity = dragon;
+                break;
             case "sword":
                 Sword sword = new Sword(x, y);
                 sword.setLayerLevel(LayerLevel.MIDDLE);

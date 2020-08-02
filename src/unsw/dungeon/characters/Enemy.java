@@ -92,17 +92,14 @@ public class Enemy extends Character implements Observer, Observable, TimeDepend
         if (isSamePosition(playerPosition))
             getDungeon().getPlayer().setCharacterStatus(CharacterStatus.DEAD);
         if (getDungeon().getPlayer().characterStatusEquals(CharacterStatus.DEAD))
-            stopTimelines();
+            stop();
         notifyAllObservers();
     }
 
     public void trackPlayer() {
         if (!isSearching)
             return;
-        if (getDungeon().getPlayer().characterStatusEquals(CharacterStatus.INVINCIBLE))
-            pathFinder.setNegation(true);
-        else
-            pathFinder.setNegation(false);
+        pathFinder.setNegation(getDungeon().getPlayer().characterStatusEquals(CharacterStatus.INVINCIBLE));
         path = pathFinder.findPath();
     }
 
@@ -110,17 +107,16 @@ public class Enemy extends Character implements Observer, Observable, TimeDepend
         path.clear();
     }
 
+    public void takeDamage(int damage) {
+        die();
+    }
+
     public void die() {
-        stopTimelines();
+        stop();
         setCharacterStatus(CharacterStatus.DEAD);
         getDungeon().getPlayer().removeObserver(this);
         getDungeon().removeEntity(getX(), getY(), this);
         return;
-    }
-
-    public void stopTimelines() {
-        moveTimeline.stop();
-        searchTimeline.stop();
     }
 
     public int[] getPlayerPosition() {
@@ -182,6 +178,7 @@ public class Enemy extends Character implements Observer, Observable, TimeDepend
 
     @Override
     public void stop() {
-        stopTimelines();
+        moveTimeline.stop();
+        searchTimeline.stop();
     }
 }
