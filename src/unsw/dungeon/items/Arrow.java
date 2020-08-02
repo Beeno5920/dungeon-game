@@ -23,21 +23,21 @@ public class Arrow extends Item {
         this.images = new Images();
     }
 
-    public void shoot(Dungeon dungeon, Orientation orientation) {
+    public void shoot(Dungeon dungeon, Orientation orientation, int attackPower) {
         setPosition(dungeon.getPlayer().getX(), dungeon.getPlayer().getY());
         changeImage(orientation);
         setVisibility(true);
         timeline = new Timeline();
-        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(100), e -> move(dungeon, orientation)));
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(100), e -> move(dungeon, orientation, attackPower)));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.playFromStart();
     }
 
-    private boolean check(Dungeon dungeon, int[] pos) {
+    private boolean check(Dungeon dungeon, int[] pos, int attackPower) {
         for (Entity entity : dungeon.getEntities(pos[0], pos[1])) {
             if (entity instanceof Enemy || entity instanceof FieldObject) {
                 if (entity instanceof Enemy)
-                    ((Enemy) entity).die();
+                    ((Enemy) entity).takeDamage(attackPower);
                 setVisibility(false);
                 timeline.stop();
                 return true;
@@ -47,9 +47,9 @@ public class Arrow extends Item {
         return false;
     }
 
-    private void move(Dungeon dungeon, Orientation orientation) {
+    private void move(Dungeon dungeon, Orientation orientation, int attackPower) {
         int[] pos = getPosition();
-        if (check(dungeon, pos))
+        if (check(dungeon, pos, attackPower))
             return;
 
         if (orientation.equals(Orientation.UP)) pos[1]--;
@@ -57,7 +57,7 @@ public class Arrow extends Item {
         else if (orientation.equals(Orientation.LEFT)) pos[0]--;
         else pos[0]++;
 
-        if (check(dungeon, pos))
+        if (check(dungeon, pos, attackPower))
             return;
 
         setPosition(pos[0], pos[1]);
