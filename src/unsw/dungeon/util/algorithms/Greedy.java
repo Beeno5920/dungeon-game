@@ -51,7 +51,7 @@ public class Greedy implements SearchingAlgorithm {
             visited.add(curr.x + " " + curr.y);
             for (int[] dir : dirs) {
                 int x = curr.x + dir[0], y = curr.y + dir[1];
-                if (!visited.contains(x + " " + y)) {
+                if (subject.canMoveTo(x, y) && !visited.contains(x + " " + y)) {
                     PathFinder.Node next = new PathFinder.Node(x, y, getHeuristic(x, y));
                     next.prev = curr;
                     toExplore.add(next);
