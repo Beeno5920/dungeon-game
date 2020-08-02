@@ -108,7 +108,7 @@ public class StartingViewController {
 
         Button startButton = new Button("Start (S)");
         startButton.setId("button");
-        startButton.setOnMouseClicked(e -> {
+        startButton.setOnAction(e -> {
             try {
                 sceneSelector.loadNextLevel();
             } catch (IOException ioException) {

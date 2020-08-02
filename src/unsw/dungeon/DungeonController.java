@@ -94,15 +94,19 @@ public class DungeonController {
 
         if (!isGameOver) {
             Button continueButton = new Button("Continue (C)");
-            continueButton.setOnMouseClicked(e -> sceneSelector.setScene("dungeon"));
+            continueButton.setOnAction(e -> {
+                closeMenu();
+                sceneSelector.setScene("dungeon");
+            });
             menu.getChildren().add(continueButton);
         }
 
         Button restartButton = new Button("Restart (R)");
         restartButton.setId("button");
-        restartButton.setOnMouseClicked(e -> {
+        restartButton.setOnAction(e -> {
             try {
                 sceneSelector.loadCurrentLevel();
+                closeMenu();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
