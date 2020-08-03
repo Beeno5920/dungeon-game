@@ -20,11 +20,11 @@ public class Enemy extends Character implements Observer, Observable, TimeDepend
     private int[] playerPosition;
     private Set<Observer> observers;
 
-    private PathFinder pathFinder;
-    private List<PathFinder.Node> path;
+    protected PathFinder pathFinder;
+    protected List<PathFinder.Node> path;
 
-    private Timeline moveTimeline, searchTimeline;
-    private boolean isSearching;
+    protected Timeline moveTimeline, searchTimeline;
+    protected boolean isSearching;
 
     public Enemy(Dungeon dungeon, int x, int y) {
         super(dungeon, x, y);
@@ -33,6 +33,20 @@ public class Enemy extends Character implements Observer, Observable, TimeDepend
         this.observers = new HashSet<>();
         this.pathFinder = new PathFinder(new Astar(this, getPosition(), playerPosition));
         this.path = new ArrayList<>();
+        initializeTimelines();
+    }
+
+    public Enemy(Dungeon dungeon, int x, int y, int speed) {
+        super(dungeon, x, y);
+        this.speed = speed;
+        this.playerPosition = dungeon.getPlayer().getPosition();
+        this.observers = new HashSet<>();
+        this.pathFinder = new PathFinder(new Astar(this, getPosition(), playerPosition));
+        this.path = new ArrayList<>();
+        initializeTimelines();
+    }
+
+    protected void initializeTimelines() {
         this.moveTimeline = new Timeline();
         this.searchTimeline = new Timeline();
         this.isSearching = false;
@@ -78,17 +92,14 @@ public class Enemy extends Character implements Observer, Observable, TimeDepend
         if (isSamePosition(playerPosition))
             getDungeon().getPlayer().setCharacterStatus(CharacterStatus.DEAD);
         if (getDungeon().getPlayer().characterStatusEquals(CharacterStatus.DEAD))
-            stopTimelines();
+            stop();
         notifyAllObservers();
     }
 
     public void trackPlayer() {
         if (!isSearching)
             return;
-        if (getDungeon().getPlayer().characterStatusEquals(CharacterStatus.INVINCIBLE))
-            pathFinder.setNegation(true);
-        else
-            pathFinder.setNegation(false);
+        pathFinder.setNegation(getDungeon().getPlayer().characterStatusEquals(CharacterStatus.INVINCIBLE));
         path = pathFinder.findPath();
     }
 
@@ -96,17 +107,16 @@ public class Enemy extends Character implements Observer, Observable, TimeDepend
         path.clear();
     }
 
+    public void takeDamage(int damage) {
+        die();
+    }
+
     public void die() {
-        stopTimelines();
+        stop();
         setCharacterStatus(CharacterStatus.DEAD);
         getDungeon().getPlayer().removeObserver(this);
         getDungeon().removeEntity(getX(), getY(), this);
         return;
-    }
-
-    public void stopTimelines() {
-        moveTimeline.stop();
-        searchTimeline.stop();
     }
 
     public int[] getPlayerPosition() {
@@ -168,6 +178,7 @@ public class Enemy extends Character implements Observer, Observable, TimeDepend
 
     @Override
     public void stop() {
-        stopTimelines();
+        moveTimeline.stop();
+        searchTimeline.stop();
     }
 }

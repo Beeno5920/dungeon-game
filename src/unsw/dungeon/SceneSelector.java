@@ -6,9 +6,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import unsw.dungeon.characters.Player;
 
+import javafx.scene.image.ImageView;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,6 +47,7 @@ public class SceneSelector {
         loader.setController(controller);
         Parent root = loader.load();
         Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         root.requestFocus();
 
         return scene;
@@ -71,7 +74,7 @@ public class SceneSelector {
         stage.setScene(dungeonScene);
     }
 
-    public void reloadCurrLevel() throws IOException {
+    public void loadCurrentLevel() throws IOException {
         loadDungeonScene();
     }
 
@@ -102,8 +105,28 @@ public class SceneSelector {
         dungeonController.gameOver();
     }
 
+    public void displayEffect(ImageView effect, int x, int y) {
+        dungeonController.displayEffect(effect, x, y);
+    }
+
+    public void removeEffect(ImageView effect) {
+        dungeonController.removeEffect(effect);
+    }
+
+    public File[] getLevels() {
+        return levels;
+    }
+
+    public int getCurrLevelIdx() {
+        return currLevelIdx;
+    }
+
     public void setCurrLevelIdx(int currLevelIdx) {
         this.currLevelIdx = currLevelIdx;
+    }
+
+    public void setCurrentLevelIdx(int i) {
+        currLevelIdx = i;
     }
 
     public void close() {

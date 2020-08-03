@@ -3,10 +3,7 @@ package unsw.dungeon;
 import javafx.util.Pair;
 import unsw.dungeon.characters.Player;
 import unsw.dungeon.enums.ItemCategory;
-import unsw.dungeon.items.InvincibilityPotion;
-import unsw.dungeon.items.Item;
-import unsw.dungeon.items.Key;
-import unsw.dungeon.items.Sword;
+import unsw.dungeon.items.*;
 
 import javafx.scene.image.ImageView;
 import java.util.ArrayList;
@@ -15,12 +12,10 @@ import java.util.Map;
 
 public class InventoryControllerLoader {
     private Player player;
-    private EntityImages images;
     private List<Pair<Item, ImageView>> imageViews;
 
     public InventoryControllerLoader(Player player) {
         this.player = player;
-        this.images = new EntityImages();
         this.imageViews = new ArrayList<>();
         extractItems();
     }
@@ -38,6 +33,12 @@ public class InventoryControllerLoader {
             case SWORD:
                 addImage((Sword) item);
                 break;
+            case BOW:
+                addImage((Bow) item);
+                break;
+            case ARROW:
+                addImage((Arrow) item);
+                break;
             case KEY:
                 addImage((Key) item);
                 break;
@@ -48,18 +49,28 @@ public class InventoryControllerLoader {
     }
 
     private void addImage(Sword sword) {
-        ImageView view = new ImageView(images.swordImage);
+        ImageView view = new ImageView(Images.swordImage);
         imageViews.add(new Pair<>(sword, view));
     }
 
     private void addImage(Key key) {
-        ImageView view = new ImageView(images.keyImage);
+        ImageView view = new ImageView(Images.keyImage);
         imageViews.add(new Pair<>(key, view));
     }
 
     private void addImage(InvincibilityPotion invincibilityPotion) {
-        ImageView view = new ImageView(images.invincibilityPotionImage);
+        ImageView view = new ImageView(Images.invincibilityPotionImage);
         imageViews.add(new Pair<>(invincibilityPotion, view));
+    }
+
+    private void addImage(Bow bow) {
+        ImageView view = new ImageView(Images.bowImage);
+        imageViews.add(new Pair<>(bow, view));
+    }
+
+    private void addImage(Arrow arrow) {
+        ImageView view = new ImageView(Images.arrowLeftImage);
+        imageViews.add(new Pair<>(arrow, view));
     }
 
     public InventoryController loadController() {

@@ -1,24 +1,20 @@
 package unsw.dungeon;
 
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import unsw.dungeon.characters.Dragon;
 import unsw.dungeon.characters.Enemy;
+import unsw.dungeon.characters.Ghost;
 import unsw.dungeon.characters.Player;
 import unsw.dungeon.fieldobjects.*;
-import unsw.dungeon.items.InvincibilityPotion;
-import unsw.dungeon.items.Key;
-import unsw.dungeon.items.Sword;
-import unsw.dungeon.items.Treasure;
+import unsw.dungeon.items.*;
 
-import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A DungeonLoader that also creates the necessary ImageViews for the UI,
@@ -29,87 +25,102 @@ import java.io.File;
 public class DungeonControllerLoader extends DungeonLoader {
 
     private List<PriorityImageView> entities;
-    private EntityImages images;
 
     public DungeonControllerLoader(String filename)
             throws FileNotFoundException {
         super(filename);
         entities = new ArrayList<>();
-        images = new EntityImages();
     }
 
     @Override
     public void onLoad(Player player) {
-        ImageView view = new ImageView(images.playerImage);
+        ImageView view = new ImageView(Images.playerImage);
         addEntity(player, view);
     }
 
     @Override
     public void onLoad(Wall wall) {
-        ImageView view = new ImageView(images.wallImage);
+        ImageView view = new ImageView(Images.wallImage);
         addEntity(wall, view);
     }
 
     @Override
     public void onLoad(Exit exit) {
-        ImageView view = new ImageView(images.exitImage);
+        ImageView view = new ImageView(Images.exitImage);
         addEntity(exit, view);
     }
 
     @Override
     public void onLoad(Treasure treasure) {
-        ImageView view = new ImageView(images.treasureImage);
+        ImageView view = new ImageView(Images.treasureImage);
         addEntity(treasure, view);
     }
 
     @Override
     public void onLoad(Door door) {
-        ImageView view = new ImageView(images.closesDoorImage);
+        ImageView view = new ImageView(Images.closesDoorImage);
         if (!door.isObstacle())
-            view = new ImageView(images.openedDoorImage);
+            view = new ImageView(Images.openedDoorImage);
         addEntity(door, view);
     }
 
     @Override
     public void onLoad(Key key) {
-        ImageView view = new ImageView(images.keyImage);
+        ImageView view = new ImageView(Images.keyImage);
         addEntity(key, view);
     }
 
     @Override
     public void onLoad(Boulder boulder) {
-        ImageView view = new ImageView(images.boulderImage);
+        ImageView view = new ImageView(Images.boulderImage);
         addEntity(boulder, view);
     }
 
     @Override
     public void onLoad(FloorSwitch floorSwitch) {
-        ImageView view = new ImageView(images.floorSwitchImage);
+        ImageView view = new ImageView(Images.floorSwitchImage);
         addEntity(floorSwitch, view);
     }
 
     @Override
     public void onLoad(Portal portal) {
-        ImageView view = new ImageView(images.portalImage);
+        ImageView view = new ImageView(Images.portalImage);
         addEntity(portal, view);
     }
 
     @Override
     public void onLoad(Enemy enemy) {
-        ImageView view = new ImageView(images.enemyImage);
+        ImageView view = new ImageView(Images.enemyImage);
+        if (enemy instanceof Ghost)
+            view = new ImageView(Images.ghostImage);
+        else if (enemy instanceof Dragon)
+            view = new ImageView(Images.dragonImage);
         addEntity(enemy, view);
     }
 
     @Override
     public void onLoad(Sword sword) {
-        ImageView view = new ImageView(images.swordImage);
+        ImageView view = new ImageView(Images.swordImage);
         addEntity(sword, view);
     }
 
     @Override
     public void onLoad(InvincibilityPotion invincibilityPotion) {
-        ImageView view = new ImageView(images.invincibilityPotionImage);
+        ImageView view = new ImageView(Images.invincibilityPotionImage);
         addEntity(invincibilityPotion, view);
+    }
+
+    @Override
+    public void onLoad(Bow bow) {
+        ImageView view = new ImageView(Images.bowImage);
+        addEntity(bow, view);
+    }
+
+    @Override
+    public void onLoad(Arrow arrow) {
+        ImageView view = new ImageView(Images.arrowLeftImage);
+        arrow.setImageView(view);
+        addEntity(arrow, view);
     }
 
     private void addEntity(Entity entity, ImageView view) {

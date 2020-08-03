@@ -1,21 +1,32 @@
 package unsw.dungeon.characters;
 
+import javafx.scene.image.ImageView;
+import javafx.util.Pair;
 import unsw.dungeon.Dungeon;
 import unsw.dungeon.Entity;
 import unsw.dungeon.enums.CharacterStatus;
 import unsw.dungeon.enums.Orientation;
 import unsw.dungeon.fieldobjects.FieldObject;
+import unsw.dungeon.items.Item;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class Character extends Entity {
     private Dungeon dungeon;
     private CharacterStatus characterStatus;
     private Orientation orientation;
+    private Map<Item, ImageView> effects;
+    private ImageView currEffect;
 
     public Character(Dungeon dungeon, int x, int y) {
         super(x, y);
         this.dungeon = dungeon;
         characterStatus = CharacterStatus.NORMAL;
         orientation = Orientation.DOWN;
+        effects = new HashMap<>();
     }
 
     /**
@@ -81,6 +92,35 @@ public abstract class Character extends Entity {
 
     public void notifyAllObservers() {
 
+    }
+
+    public void attachEffect(Item item, ImageView effect) {
+        effects.put(item, effect);
+    }
+
+    public void displayEffect(Item item) {
+        if (!effects.containsKey(item)) {
+            removeEffect(currEffect);
+            currEffect = null;
+        } else {
+            dungeon.displayEffect(effects.get(item), getX(), getY());
+            currEffect = effects.get(item);
+        }
+    }
+
+    public void displayEffect(ImageView effect, int x, int y) {
+        currEffect = effect;
+        dungeon.displayEffect(effect, x, y);
+    }
+
+    public void removeEffect(Item item) {
+        if (!effects.containsKey(item))
+            return;
+        dungeon.removeEffect(effects.get(item));
+    }
+
+    public void removeEffect(ImageView effect) {
+        dungeon.removeEffect(effect);
     }
 
     /**

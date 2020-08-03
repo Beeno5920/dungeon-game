@@ -84,6 +84,10 @@ public class Entity {
         return layerLevel;
     }
 
+    public ImageView getImageView() {
+        return imageView;
+    }
+
     public void setLayerLevel(LayerLevel layerLevel) {
         this.layerLevel = layerLevel;
     }
