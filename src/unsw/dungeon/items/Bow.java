@@ -6,7 +6,7 @@ import unsw.dungeon.characters.Player;
 import unsw.dungeon.enums.ItemCategory;
 
 public class Bow extends Item {
-    public static final int attackPower = 1;
+    public static final int attackPoint = 1;
 
     public Bow(int x, int y) {
         super(ItemCategory.BOW, x, y);
@@ -23,7 +23,7 @@ public class Bow extends Item {
             return;
 
         Arrow arrow = (Arrow) player.getItems(ItemCategory.ARROW).get(0);
-        arrow.shoot(player.getDungeon(), player.getOrientation(), attackPower);
+        arrow.shoot(player.getDungeon(), player.getOrientation(), attackPoint);
         player.discardItem(arrow);
     }
 }

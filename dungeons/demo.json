@@ -660,6 +660,18 @@
       "x": 10,
       "y": 13,
       "type": "dragon"
+    },
+    {
+      "x": 2,
+      "y": 3,
+      "id": 1,
+      "type": "portal"
+    },
+    {
+      "x": 11,
+      "y": 12,
+      "id": 1,
+      "type": "portal"
     }
   ],
   "goal-condition": {

@@ -14,7 +14,7 @@ import unsw.dungeon.enums.ItemCategory;
 public class Sword extends Item implements Consumable {
     private int durability = 5;
     private ImageView effect;
-    public static final int attackPower = 2;
+    public static final int attackPoint = 2;
 
     public Sword(int x, int y) {
         super(ItemCategory.SWORD, x, y);
@@ -38,7 +38,7 @@ public class Sword extends Item implements Consumable {
         System.out.println("Attacking " + player.getOrientation());
         for (Entity entity : player.getEntities(position[0], position[1])) {
             if (entity instanceof Enemy) {
-                ((Enemy) entity).takeDamage(attackPower);
+                ((Enemy) entity).takeDamage(attackPoint);
                 if (decreaseAvailability(1) == 0) {
                     player.discardItem(this);
                     player.getDungeon().removeEffect(effect);

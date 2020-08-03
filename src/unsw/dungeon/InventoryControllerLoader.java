@@ -12,12 +12,10 @@ import java.util.Map;
 
 public class InventoryControllerLoader {
     private Player player;
-    private Images images;
     private List<Pair<Item, ImageView>> imageViews;
 
     public InventoryControllerLoader(Player player) {
         this.player = player;
-        this.images = new Images();
         this.imageViews = new ArrayList<>();
         extractItems();
     }
@@ -51,27 +49,27 @@ public class InventoryControllerLoader {
     }
 
     private void addImage(Sword sword) {
-        ImageView view = new ImageView(images.swordImage);
+        ImageView view = new ImageView(Images.swordImage);
         imageViews.add(new Pair<>(sword, view));
     }
 
     private void addImage(Key key) {
-        ImageView view = new ImageView(images.keyImage);
+        ImageView view = new ImageView(Images.keyImage);
         imageViews.add(new Pair<>(key, view));
     }
 
     private void addImage(InvincibilityPotion invincibilityPotion) {
-        ImageView view = new ImageView(images.invincibilityPotionImage);
+        ImageView view = new ImageView(Images.invincibilityPotionImage);
         imageViews.add(new Pair<>(invincibilityPotion, view));
     }
 
     private void addImage(Bow bow) {
-        ImageView view = new ImageView(images.bowImage);
+        ImageView view = new ImageView(Images.bowImage);
         imageViews.add(new Pair<>(bow, view));
     }
 
     private void addImage(Arrow arrow) {
-        ImageView view = new ImageView(images.arrowLeftImage);
+        ImageView view = new ImageView(Images.arrowLeftImage);
         imageViews.add(new Pair<>(arrow, view));
     }
 
