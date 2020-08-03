@@ -118,6 +118,15 @@ public class DungeonController {
         menu.getChildren().add(levelsButton);
 
         Button exitButton = new Button("Exit (E)");
+        exitButton.setOnAction(e -> {
+            try {
+                sceneSelector.loadStartingScene();
+                sceneSelector.setCurrLevelIdx(-1);
+                closeMenu();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
         menu.getChildren().add(exitButton);
 
         return menu;

@@ -117,11 +117,10 @@ public class StartingViewController {
         });
 
         Button levelButton = new Button("Choose level (L)");
-        levelButton.setId("button");
         levelButton.setOnAction(e -> displayLevelsMenu());
 
         Button exitButton = new Button("Exit (E)");
-        exitButton.setId("button");
+        exitButton.setOnAction(e -> sceneSelector.close());
 
         menu.getChildren().addAll(title, startButton, levelButton, exitButton);
     }
