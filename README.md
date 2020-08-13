@@ -1,5 +1,9 @@
-# Project
+# Project  
+## Demo
+![demo](https://github.com/Beeno5920/dungeon-game/blob/master/images/demo.gif)  
+  
 
+------ The following is the original spec of the project ------
 ## Aims
 
 * Appreciate issues in user interface design
@@ -400,42 +404,3 @@ Marks will be deducted for poor git and GitLab usage. For example, meaningless c
 [maze]:          examples/maze.png
 [boulders]:      examples/boulders.png
 [advanced]:      examples/advanced.png
-
-## Logs of work completed per partner
-
-### Week-05
-
-Fill in here.
-
-### Week-06
-
-Chi Chung: 
-1.  Developed 4 epics and 14 corresponding user stories
-2.  Assigned stories points and priority tags to the 14 user stories mentioned above
-3.  Added acceptance criteria for the 14 user stories mentioned above
-
-Max:
-1.  Developed 1 epic and 3 corresponding user stories
-2.  Added 4 new user stories to existing epics
-3.  Assigned stories points and priority tags to the 7 stories mentioned above
-4.  Added acceptance criteria for the 7 user stories metioned above
-
-### Week-07
-
-Chi Chung:
-1.  Created the UML diagram
-2.  Created Observer and Observable interfaces
-3.  Created 3 enums
-4.  Implemented Characters related entities (player and enemy)
-5.  Implemented Items related entities (key, sword and invincibiliy potion)
-6.  Wrote JUnit tests for the implemented entities
-
-### Week-08
-
-Chi Chung:
-1.  Completed the backend
-2.  Fixed all the bugs discovered
-
-### Week-09
-
-Fill in here.
